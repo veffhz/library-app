@@ -1,0 +1,4 @@
+  shell:
+    command:
+      exit:
+        enabled: true
