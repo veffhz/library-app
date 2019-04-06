@@ -29,7 +29,7 @@ public class GenreCommands {
     }
 
     @ShellMethod("Show genres by genreName.")
-    public void authorsGenreName(@ShellOption String genreName) {
+    public void genreName(@ShellOption String genreName) {
         genreService.getByGenreName(genreName).forEach(genre -> log.info(genre.toString()));
     }
 
