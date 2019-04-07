@@ -6,10 +6,10 @@ import java.util.List;
 
 public interface BookDao {
     int count();
-    int insert(Book book);
-    Book getById(int id);
+    long insert(Book book);
+    Book getById(long id);
     List<Book> getByBookName(String bookName);
     List<Book> getByBookPartName(String bookName);
     List<Book> getAll();
-    void deleteById(int id);
+    void deleteById(long id);
 }

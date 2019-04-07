@@ -8,12 +8,12 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @ToString
 public class Author {
-    private int id;
+    private long id;
     private final String firstName;
     private final String middleName;
     private final String lastName;
 
-    public Author(int id, String firstName, String middleName, String lastName) {
+    public Author(long id, String firstName, String middleName, String lastName) {
         this.id = id;
         this.firstName = firstName;
         this.middleName = middleName;

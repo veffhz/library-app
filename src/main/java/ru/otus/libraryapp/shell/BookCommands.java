@@ -24,7 +24,7 @@ public class BookCommands {
     }
 
     @ShellMethod("Show book on id.")
-    public void book(@ShellOption int id) {
+    public void book(@ShellOption long id) {
         Book book = bookService.getById(id);
         log.info(book.toString());
     }
@@ -45,18 +45,18 @@ public class BookCommands {
     }
 
     @ShellMethod("Show author on id.")
-    public void deleteBook(@ShellOption int id) {
+    public void deleteBook(@ShellOption long id) {
         bookService.deleteById(id);
         log.info(String.format("Deleted book {%d}", id));
     }
 
     @ShellMethod("Add book \"authorId\", \"genreId\", \"bookName\", \"publishDate\", " +
             "\"language\", \"publishingHouse\", \"city\", \"isbn\".")
-    public void addBook(@ShellOption int authorId, @ShellOption int genreId,
+    public void addBook(@ShellOption long authorId, @ShellOption long genreId,
                     @ShellOption String bookName, @ShellOption String publishDate,
                     @ShellOption String language, @ShellOption String publishingHouse,
                     @ShellOption String city, @ShellOption String isbn) {
-        int id = bookService.insert(authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
+        long id = bookService.insert(authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
         log.info(String.format("Book {%d} created", id));
     }
 

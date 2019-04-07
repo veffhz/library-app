@@ -26,7 +26,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author getById(int id) {
+    public Author getById(long id) {
         return dao.getById(id);
     }
 
@@ -41,12 +41,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         dao.deleteById(id);
     }
 
     @Override
-    public int insert(String firstName, String middleName, String lastName) {
+    public long insert(String firstName, String middleName, String lastName) {
         Author author = new Author(firstName, Strings.isBlank(middleName) ? null : middleName, lastName);
         return dao.insert(author);
     }

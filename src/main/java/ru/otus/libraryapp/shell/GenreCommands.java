@@ -23,7 +23,7 @@ public class GenreCommands {
     }
 
     @ShellMethod("Show genre on id.")
-    public void genre(@ShellOption int id) {
+    public void genre(@ShellOption long id) {
         Genre genre = genreService.getById(id);
         log.info(genre.toString());
     }
@@ -39,14 +39,14 @@ public class GenreCommands {
     }
 
     @ShellMethod("Show genre on id.")
-    public void deleteGenre(@ShellOption int id) {
+    public void deleteGenre(@ShellOption long id) {
         genreService.deleteById(id);
         log.info(String.format("Deleted genre {%d}", id));
     }
 
     @ShellMethod("Add genre \"genre_name\".")
     public void addGenre(@ShellOption String genreName) {
-        int id = genreService.insert(genreName);
+        long id = genreService.insert(genreName);
         log.info(String.format("Genre {%d} created", id));
     }
 

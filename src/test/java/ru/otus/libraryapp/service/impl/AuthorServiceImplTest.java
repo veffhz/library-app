@@ -34,7 +34,7 @@ class AuthorServiceImplTest {
     @Test
     void deleteById() {
         int size = authorService.count();
-        int id = authorService.insert("Test", null, "Test");
+        long id = authorService.insert("Test", null, "Test");
         authorService.deleteById(id);
         int newSize = authorService.count();
         assertEquals(newSize, size);
@@ -42,7 +42,7 @@ class AuthorServiceImplTest {
 
     @Test
     void insert() {
-        int id = authorService.insert("Name", null, "Test");
+        long id = authorService.insert("Name", null, "Test");
         Author author = authorService.getById(id);
         assertEquals(author.getFirstName(), "Name");
         assertEquals(author.getLastName(), "Test");

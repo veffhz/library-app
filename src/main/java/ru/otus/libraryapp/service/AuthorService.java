@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface AuthorService {
     int count();
-    Author getById(int id);
+    Author getById(long id);
     List<Author> getByLastName(String name);
     List<Author> getAll();
-    void deleteById(int id);
-    int insert(String firstName, String middleName, String lastName);
+    void deleteById(long id);
+    long insert(String firstName, String middleName, String lastName);
 }

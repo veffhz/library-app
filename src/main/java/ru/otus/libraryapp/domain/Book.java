@@ -10,9 +10,9 @@ import java.util.Date;
 @RequiredArgsConstructor
 @ToString
 public class Book {
-    private int id;
-    private final int authorId;
-    private final int genreId;
+    private long id;
+    private final long authorId;
+    private final long genreId;
     private final String bookName;
     private final Date publishDate;
     private final String language;
@@ -20,7 +20,7 @@ public class Book {
     private final String city;
     private final String isbn;
 
-    public Book(int id, int authorId, int genreId, String bookName,
+    public Book(long id, long authorId, long genreId, String bookName,
                 Date publishDate, String language,
                 String publishingHouse, String city, String isbn) {
         this.id = id;

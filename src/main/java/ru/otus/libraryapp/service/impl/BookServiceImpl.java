@@ -35,7 +35,7 @@ public class BookServiceImpl implements BookService {
         return dao.count();
     }
 
-    public Book getById(int id) {
+    public Book getById(long id) {
         return dao.getById(id);
     }
 
@@ -55,12 +55,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         dao.deleteById(id);
     }
 
     @Override
-    public int insert(int authorId, int genreId, String bookName, String publishDate, String language,
+    public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
         Book book = new Book(authorId, genreId, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         return dao.insert(book);

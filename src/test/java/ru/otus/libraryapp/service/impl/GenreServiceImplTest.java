@@ -32,7 +32,7 @@ class GenreServiceImplTest {
     @Test
     void deleteById() {
         int size = genreService.count();
-        int id = genreService.insert("Test");
+        long id = genreService.insert("Test");
         genreService.deleteById(id);
         int newSize = genreService.count();
         assertEquals(newSize, size);
@@ -40,7 +40,7 @@ class GenreServiceImplTest {
 
     @Test
     void insert() {
-        int id = genreService.insert("Name");
+        long id = genreService.insert("Name");
         Genre author = genreService.getById(id);
         assertEquals(author.getGenreName(), "Name");
 

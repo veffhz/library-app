@@ -36,7 +36,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public int insert(Author author) {
+    public long insert(Author author) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("first_name", author.getFirstName());
@@ -49,7 +49,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public Author getById(int id) {
+    public Author getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
                 "select * from authors where id = :id", params, new AuthorMapper()
@@ -70,7 +70,7 @@ public class AuthorDaoJdbc implements AuthorDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
                 "delete from authors where id = :id", params
@@ -81,7 +81,7 @@ public class AuthorDaoJdbc implements AuthorDao {
 
         @Override
         public Author mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("id");
+            long id = resultSet.getLong("id");
             String firstName = resultSet.getString("first_name");
             String middleName = resultSet.getString("middle_name");
             String lastName = resultSet.getString("last_name");

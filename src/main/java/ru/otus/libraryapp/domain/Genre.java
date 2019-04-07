@@ -8,10 +8,10 @@ import lombok.ToString;
 @RequiredArgsConstructor
 @ToString
 public class Genre {
-    private int id;
+    private long id;
     private final String genreName;
 
-    public Genre(int id, String genreName) {
+    public Genre(long id, String genreName) {
         this.id = id;
         this.genreName = genreName;
     }

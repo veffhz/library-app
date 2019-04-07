@@ -33,7 +33,7 @@ class BookServiceImplTest {
     @Test
     void deleteById() {
         int size = bookService.count();
-        int id = bookService.insert(1, 1, "Book",
+        long id = bookService.insert(1, 1, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
         bookService.deleteById(id);
@@ -43,7 +43,7 @@ class BookServiceImplTest {
 
     @Test
     void insert() {
-        int id = bookService.insert(1, 1, "Book",
+        long id = bookService.insert(1, 1, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
         Book book = bookService.getById(id);

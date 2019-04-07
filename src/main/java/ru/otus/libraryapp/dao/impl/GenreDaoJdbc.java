@@ -36,17 +36,17 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public int insert(Genre genre) {
+    public long insert(Genre genre) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("genre_name", genre.getGenreName());
         namedParameterJdbcOperations.update(
                 "insert into genres (genre_name) values (:genre_name)", params, keyHolder, new String[]{"ID"});
-        return keyHolder.getKey().intValue();
+        return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Genre getById(int id) {
+    public Genre getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
                 "select * from genres where id = :id", params, new GenreMapper()
@@ -67,7 +67,7 @@ public class GenreDaoJdbc implements GenreDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
                 "delete from genres where id = :id", params
@@ -78,7 +78,7 @@ public class GenreDaoJdbc implements GenreDao {
 
         @Override
         public Genre mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("id");
+            long id = resultSet.getLong("id");
             String genreName = resultSet.getString("genre_name");
             return new Genre(id, genreName);
         }

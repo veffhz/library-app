@@ -24,7 +24,7 @@ public class AuthorCommands {
     }
 
     @ShellMethod("Show author by id.")
-    public void author(@ShellOption int id) {
+    public void author(@ShellOption long id) {
         Author author = authorService.getById(id);
         log.info(author.toString());
     }
@@ -40,7 +40,7 @@ public class AuthorCommands {
     }
 
     @ShellMethod("Show author on id.")
-    public void deleteAuthor(@ShellOption int id) {
+    public void deleteAuthor(@ShellOption long id) {
         authorService.deleteById(id);
         log.info(String.format("Deleted author {%d}", id));
     }
@@ -49,7 +49,7 @@ public class AuthorCommands {
     public void addAuthor(@ShellOption String firstName,
                           @ShellOption(defaultValue="") String middleName,//TODO empty param
                           @ShellOption String lastName) {
-        int id = authorService.insert(firstName, middleName, lastName);
+        long id = authorService.insert(firstName, middleName, lastName);
         log.info(String.format("Author {%d} created", id));
     }
 

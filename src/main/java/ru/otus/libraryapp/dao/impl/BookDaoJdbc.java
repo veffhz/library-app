@@ -37,7 +37,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public int insert(Book book) {
+    public long insert(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
         params.addValue("author_id", book.getAuthorId());
@@ -52,11 +52,11 @@ public class BookDaoJdbc implements BookDao {
                 "insert into books (author_id, genre_id, book_name, publish_date, language, publishing_house, city, isbn) " +
                         "values (:author_id, :genre_id, :book_name, :publish_date, :language, :publishing_house, :city, :isbn)",
                 params, keyHolder, new String[]{"ID"});
-        return keyHolder.getKey().intValue();
+        return keyHolder.getKey().longValue();
     }
 
     @Override
-    public Book getById(int id) {
+    public Book getById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         return namedParameterJdbcOperations.queryForObject(
                 "select * from books where id = :id", params, new BookMapper()
@@ -85,7 +85,7 @@ public class BookDaoJdbc implements BookDao {
     }
 
     @Override
-    public void deleteById(int id) {
+    public void deleteById(long id) {
         Map<String, Object> params = Collections.singletonMap("id", id);
         namedParameterJdbcOperations.update(
                 "delete from books where id = :id", params
@@ -96,9 +96,9 @@ public class BookDaoJdbc implements BookDao {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
-            int id = resultSet.getInt("id");
-            int authorId = resultSet.getInt("author_id");
-            int genreId = resultSet.getInt("genre_id");
+            long id = resultSet.getLong("id");
+            long authorId = resultSet.getLong("author_id");
+            long genreId = resultSet.getLong("genre_id");
             String bookName = resultSet.getString("book_name");
             Date publishDate = resultSet.getDate("publish_date");
             String language = resultSet.getString("language");

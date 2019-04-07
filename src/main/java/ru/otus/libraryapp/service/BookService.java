@@ -6,11 +6,11 @@ import java.util.List;
 
 public interface BookService {
     int count();
-    Book getById(int id);
+    Book getById(long id);
     List<Book> getByBookName(String bookName);
     List<Book> getByBookPartName(String bookName);
     List<Book> getAll();
-    void deleteById(int id);
-    int insert(int authorId, int genreId, String bookName, String publishDate, String language,
+    void deleteById(long id);
+    long insert(long authorId, long genreId, String bookName, String publishDate, String language,
                String publishingHouse, String city, String isbn);
 }
