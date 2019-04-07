@@ -34,17 +34,14 @@ public class OtherCommands {
     public void info() {
         log.info("Total:");
         log.info("");
-        List<Author> authors = authorService.getAll();
-        log.info("authors: " + authors.size());
-        authors.forEach(author -> log.info(author.toString()));
+        log.info("authors: " + authorService.count());
+        authorService.getAll().forEach(author -> log.info(author.toString()));
         log.info("");
-        List<Genre> genres = genreService.getAll();
-        log.info("genres: " + genres.size());
-        genres.forEach(genre -> log.info(genre.toString()));
+        log.info("genres: " + genreService.count());
+        genreService.getAll().forEach(genre -> log.info(genre.toString()));
         log.info("");
-        List<Book> books = bookService.getAll();
-        log.info("books: " + books.size());
-        books.forEach(book -> log.info(book.toString()));
+        log.info("books: " + bookService.count());
+        bookService.getAll().forEach(book -> log.info(book.toString()));
     }
 
 }

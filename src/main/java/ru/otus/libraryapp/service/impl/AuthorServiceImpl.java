@@ -21,6 +21,11 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
+    public int count() {
+        return dao.count();
+    }
+
+    @Override
     public Author getById(int id) {
         return dao.getById(id);
     }

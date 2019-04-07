@@ -5,6 +5,7 @@ import ru.otus.libraryapp.domain.Book;
 import java.util.List;
 
 public interface BookService {
+    int count();
     Book getById(int id);
     List<Book> getByBookName(String bookName);
     List<Book> getByBookPartName(String bookName);

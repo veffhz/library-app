@@ -9,8 +9,6 @@ import org.springframework.test.context.TestPropertySource;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest(properties = "spring.shell.interactive.enabled=false")
@@ -29,18 +27,17 @@ class AuthorServiceImplTest {
 
     @Test
     void getAll() {
-        List<Author> authors = authorService.getAll();
-        assertEquals(authors.size(), 1);
+        int size = authorService.count();
+        assertEquals(size, 1);
     }
 
     @Test
     void deleteById() {
-        List<Author> authors = authorService.getAll();
-        int size = authors.size();
+        int size = authorService.count();
         int id = authorService.insert("Test", null, "Test");
         authorService.deleteById(id);
-        authors = authorService.getAll();
-        assertEquals(authors.size(), size);
+        int newSize = authorService.count();
+        assertEquals(newSize, size);
     }
 
     @Test

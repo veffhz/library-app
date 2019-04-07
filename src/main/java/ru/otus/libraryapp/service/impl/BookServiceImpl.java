@@ -30,6 +30,11 @@ public class BookServiceImpl implements BookService {
         this.dao = dao;
     }
 
+    @Override
+    public int count() {
+        return dao.count();
+    }
+
     public Book getById(int id) {
         return dao.getById(id);
     }

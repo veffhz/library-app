@@ -8,8 +8,6 @@ import org.springframework.test.context.TestPropertySource;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(properties = "spring.shell.interactive.enabled=false")
@@ -27,18 +25,17 @@ class GenreServiceImplTest {
 
     @Test
     void getAll() {
-        List<Genre> authors = genreService.getAll();
-        assertEquals(authors.size(), 1);
+        int size = genreService.count();
+        assertEquals(size, 1);
     }
 
     @Test
     void deleteById() {
-        List<Genre> genres = genreService.getAll();
-        int size = genres.size();
+        int size = genreService.count();
         int id = genreService.insert("Test");
         genreService.deleteById(id);
-        genres = genreService.getAll();
-        assertEquals(genres.size(), size);
+        int newSize = genreService.count();
+        assertEquals(newSize, size);
     }
 
     @Test

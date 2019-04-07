@@ -20,6 +20,11 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
+    public int count() {
+        return dao.count();
+    }
+
+    @Override
     public Genre getById(int id) {
         return dao.getById(id);
     }
