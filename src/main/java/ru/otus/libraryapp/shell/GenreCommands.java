@@ -30,8 +30,8 @@ public class GenreCommands {
         return genre.toString();
     }
 
-    @ShellMethod("Show genres by genreName.")
-    public String genreName(@ShellOption String genreName) {
+    @ShellMethod(value = "Show genres by genreName.", key = "genre-name")
+    public String genre(@ShellOption String genreName) {
         return Arrays.toString(genreService.getByGenreName(genreName).toArray());
     }
 
@@ -40,14 +40,14 @@ public class GenreCommands {
         return Arrays.toString(genreService.getAll().toArray());
     }
 
-    @ShellMethod("Show genre on id.")
-    public String deleteGenre(@ShellOption long id) {
+    @ShellMethod(value = "Delete genre by id.", key = "delete-genre")
+    public String delete(@ShellOption long id) {
         genreService.deleteById(id);
         return String.format("Deleted genre {%d}", id);
     }
 
-    @ShellMethod("Add genre \"genre_name\".")
-    public String addGenre(@ShellOption String genreName) {
+    @ShellMethod(value = "Add genre \"genre_name\".", key = "add-genre")
+    public String add(@ShellOption String genreName) {
         long id = genreService.insert(genreName);
         return String.format("Genre {%d} created", id);
     }

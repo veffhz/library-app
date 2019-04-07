@@ -31,8 +31,8 @@ public class AuthorCommands {
         return author.toString();
     }
 
-    @ShellMethod("Show authors by lastName.")
-    public String authorsLastName(@ShellOption String lastName) {
+    @ShellMethod(value = "Show authors by lastName.", key = "authors-lastName")
+    public String author(@ShellOption String lastName) {
         return Arrays.toString(authorService.getByLastName(lastName).toArray());
     }
 
@@ -41,14 +41,14 @@ public class AuthorCommands {
         return Arrays.toString(authorService.getAll().toArray());
     }
 
-    @ShellMethod("Show author on id.")
-    public String deleteAuthor(@ShellOption long id) {
+    @ShellMethod(value = "Delete author by id.", key = "delete")
+    public String delete(@ShellOption long id) {
         authorService.deleteById(id);
         return String.format("Deleted author {%d}", id);
     }
 
-    @ShellMethod("Add author \"firstName\", \"middleName\", \"lastName\".")
-    public String addAuthor(@ShellOption String firstName,
+    @ShellMethod(value = "Add author \"firstName\", \"middleName\", \"lastName\".", key = "add-author")
+    public String add(@ShellOption String firstName,
                           @ShellOption(defaultValue="") String middleName,//TODO empty param
                           @ShellOption String lastName) {
         long id = authorService.insert(firstName, middleName, lastName);

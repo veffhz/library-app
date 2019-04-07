@@ -25,19 +25,19 @@ public class BookCommands {
         this.bookService = bookService;
     }
 
-    @ShellMethod("Show book on id.")
+    @ShellMethod("Show book by id.")
     public String book(@ShellOption long id) {
         Book book = bookService.getById(id);
         return book.toString();
     }
 
-    @ShellMethod("Show books by bookName.")
+    @ShellMethod(value = "Show books by bookName.", key = "books-name")
     public String booksName(@ShellOption String bookName) {
         return Arrays.toString(bookService.getByBookName(bookName).toArray());
     }
 
-    @ShellMethod("Show books like book name.")
-    public String booksLikeName(@ShellOption String bookName) {
+    @ShellMethod(value = "Show books like book name.", key = "books-likeName")
+    public String books(@ShellOption String bookName) {
         return Arrays.toString(bookService.getByBookPartName(bookName).toArray());
     }
 
@@ -46,15 +46,15 @@ public class BookCommands {
         return Arrays.toString(bookService.getAll().toArray());
     }
 
-    @ShellMethod("Show author on id.")
-    public String deleteBook(@ShellOption long id) {
+    @ShellMethod(value = "Delete author by id.", key = "delete-book")
+    public String delete(@ShellOption long id) {
         bookService.deleteById(id);
         return String.format("Deleted book {%d}", id);
     }
 
-    @ShellMethod("Add book \"authorId\", \"genreId\", \"bookName\", \"publishDate\", " +
-            "\"language\", \"publishingHouse\", \"city\", \"isbn\".")
-    public String addBook(@ShellOption long authorId, @ShellOption long genreId,
+    @ShellMethod(value = "Add book \"authorId\", \"genreId\", \"bookName\", \"publishDate\", " +
+            "\"language\", \"publishingHouse\", \"city\", \"isbn\".", key = "add-book")
+    public String add(@ShellOption long authorId, @ShellOption long genreId,
                     @ShellOption String bookName, @ShellOption String publishDate,
                     @ShellOption String language, @ShellOption String publishingHouse,
                     @ShellOption String city, @ShellOption String isbn) {
