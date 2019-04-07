@@ -11,6 +11,8 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
+import java.util.Arrays;
+
 @Log
 @ShellComponent
 @ShellCommandGroup("Author commands")
@@ -24,33 +26,33 @@ public class AuthorCommands {
     }
 
     @ShellMethod("Show author by id.")
-    public void author(@ShellOption long id) {
+    public String author(@ShellOption long id) {
         Author author = authorService.getById(id);
-        log.info(author.toString());
+        return author.toString();
     }
 
     @ShellMethod("Show authors by lastName.")
-    public void authorsLastName(@ShellOption String lastName) {
-        authorService.getByLastName(lastName).forEach(author -> log.info(author.toString()));
+    public String authorsLastName(@ShellOption String lastName) {
+        return Arrays.toString(authorService.getByLastName(lastName).toArray());
     }
 
     @ShellMethod("Show all authors.")
-    public void authors() {
-        authorService.getAll().forEach(author -> log.info(author.toString()));
+    public String authors() {
+        return Arrays.toString(authorService.getAll().toArray());
     }
 
     @ShellMethod("Show author on id.")
-    public void deleteAuthor(@ShellOption long id) {
+    public String deleteAuthor(@ShellOption long id) {
         authorService.deleteById(id);
-        log.info(String.format("Deleted author {%d}", id));
+        return String.format("Deleted author {%d}", id);
     }
 
     @ShellMethod("Add author \"firstName\", \"middleName\", \"lastName\".")
-    public void addAuthor(@ShellOption String firstName,
+    public String addAuthor(@ShellOption String firstName,
                           @ShellOption(defaultValue="") String middleName,//TODO empty param
                           @ShellOption String lastName) {
         long id = authorService.insert(firstName, middleName, lastName);
-        log.info(String.format("Author {%d} created", id));
+        return String.format("Author {%d} created", id);
     }
 
 }

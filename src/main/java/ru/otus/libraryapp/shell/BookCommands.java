@@ -11,6 +11,8 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.service.BookService;
 
+import java.util.Arrays;
+
 @Log
 @ShellComponent
 @ShellCommandGroup("Book commands")
@@ -24,40 +26,40 @@ public class BookCommands {
     }
 
     @ShellMethod("Show book on id.")
-    public void book(@ShellOption long id) {
+    public String book(@ShellOption long id) {
         Book book = bookService.getById(id);
-        log.info(book.toString());
+        return book.toString();
     }
 
     @ShellMethod("Show books by bookName.")
-    public void booksName(@ShellOption String bookName) {
-        bookService.getByBookName(bookName).forEach(book -> log.info(book.toString()));
+    public String booksName(@ShellOption String bookName) {
+        return Arrays.toString(bookService.getByBookName(bookName).toArray());
     }
 
     @ShellMethod("Show books like book name.")
-    public void booksLikeName(@ShellOption String bookName) {
-        bookService.getByBookPartName(bookName).forEach(book -> log.info(book.toString()));
+    public String booksLikeName(@ShellOption String bookName) {
+        return Arrays.toString(bookService.getByBookPartName(bookName).toArray());
     }
 
     @ShellMethod("Show all books.")
-    public void books() {
-        bookService.getAll().forEach(book -> log.info(book.toString()));
+    public String books() {
+        return Arrays.toString(bookService.getAll().toArray());
     }
 
     @ShellMethod("Show author on id.")
-    public void deleteBook(@ShellOption long id) {
+    public String deleteBook(@ShellOption long id) {
         bookService.deleteById(id);
-        log.info(String.format("Deleted book {%d}", id));
+        return String.format("Deleted book {%d}", id);
     }
 
     @ShellMethod("Add book \"authorId\", \"genreId\", \"bookName\", \"publishDate\", " +
             "\"language\", \"publishingHouse\", \"city\", \"isbn\".")
-    public void addBook(@ShellOption long authorId, @ShellOption long genreId,
+    public String addBook(@ShellOption long authorId, @ShellOption long genreId,
                     @ShellOption String bookName, @ShellOption String publishDate,
                     @ShellOption String language, @ShellOption String publishingHouse,
                     @ShellOption String city, @ShellOption String isbn) {
         long id = bookService.insert(authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
-        log.info(String.format("Book {%d} created", id));
+        return String.format("Book {%d} created", id);
     }
 
 }

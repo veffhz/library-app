@@ -5,14 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellCommandGroup;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
-import ru.otus.libraryapp.domain.Author;
-import ru.otus.libraryapp.domain.Book;
-import ru.otus.libraryapp.domain.Genre;
+
 import ru.otus.libraryapp.service.AuthorService;
 import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
-
-import java.util.List;
 
 @Log
 @ShellComponent
@@ -31,17 +27,23 @@ public class OtherCommands {
     }
 
     @ShellMethod("Show all info.")
-    public void info() {
-        log.info("Total:");
-        log.info("");
-        log.info("authors: " + authorService.count());
-        authorService.getAll().forEach(author -> log.info(author.toString()));
-        log.info("");
-        log.info("genres: " + genreService.count());
-        genreService.getAll().forEach(genre -> log.info(genre.toString()));
-        log.info("");
-        log.info("books: " + bookService.count());
-        bookService.getAll().forEach(book -> log.info(book.toString()));
+    public String info() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Total:");
+        sb.append("\n");
+        sb.append("\nauthors: ").append(authorService.count());
+        sb.append("\n");
+        authorService.getAll().forEach(author -> sb.append(author.toString()));
+        sb.append("\n");
+        sb.append("\ngenres: ").append(genreService.count());
+        sb.append("\n");
+        genreService.getAll().forEach(genre -> sb.append(genre.toString()));
+        sb.append("\n");
+        sb.append("\nbooks: ").append(bookService.count());
+        sb.append("\n");
+        bookService.getAll().forEach(book -> sb.append(book.toString()));
+        sb.append("\n");
+        return sb.toString();
     }
 
 }

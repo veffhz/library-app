@@ -10,6 +10,8 @@ import org.springframework.shell.standard.ShellOption;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
+import java.util.Arrays;
+
 @Log
 @ShellComponent
 @ShellCommandGroup("Genre commands")
@@ -23,31 +25,31 @@ public class GenreCommands {
     }
 
     @ShellMethod("Show genre on id.")
-    public void genre(@ShellOption long id) {
+    public String genre(@ShellOption long id) {
         Genre genre = genreService.getById(id);
-        log.info(genre.toString());
+        return genre.toString();
     }
 
     @ShellMethod("Show genres by genreName.")
-    public void genreName(@ShellOption String genreName) {
-        genreService.getByGenreName(genreName).forEach(genre -> log.info(genre.toString()));
+    public String genreName(@ShellOption String genreName) {
+        return Arrays.toString(genreService.getByGenreName(genreName).toArray());
     }
 
     @ShellMethod("Show all authors.")
-    public void genres() {
-        genreService.getAll().forEach(genre -> log.info(genre.toString()));
+    public String genres() {
+        return Arrays.toString(genreService.getAll().toArray());
     }
 
     @ShellMethod("Show genre on id.")
-    public void deleteGenre(@ShellOption long id) {
+    public String deleteGenre(@ShellOption long id) {
         genreService.deleteById(id);
-        log.info(String.format("Deleted genre {%d}", id));
+        return String.format("Deleted genre {%d}", id);
     }
 
     @ShellMethod("Add genre \"genre_name\".")
-    public void addGenre(@ShellOption String genreName) {
+    public String addGenre(@ShellOption String genreName) {
         long id = genreService.insert(genreName);
-        log.info(String.format("Genre {%d} created", id));
+        return String.format("Genre {%d} created", id);
     }
 
 }
