@@ -16,18 +16,26 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import ru.otus.libraryapp.dao.AuthorDao;
 import ru.otus.libraryapp.dao.BookDao;
+import ru.otus.libraryapp.dao.GenreDao;
+import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.domain.Genre;
 
 @SuppressWarnings({"SqlNoDataSourceInspection", "ConstantConditions", "SqlDialectInspection"})
 @Repository
 public class BookDaoJdbc implements BookDao {
 
     private final NamedParameterJdbcOperations namedParameterJdbcOperations;
+    private final AuthorDao authorDao;
+    private final GenreDao genreDao;
 
     @Autowired
-    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations) {
+    public BookDaoJdbc(NamedParameterJdbcOperations namedParameterJdbcOperations, AuthorDao authorDao, GenreDao genreDao) {
         this.namedParameterJdbcOperations = namedParameterJdbcOperations;
+        this.authorDao = authorDao;
+        this.genreDao = genreDao;
     }
 
     @Override
@@ -40,8 +48,8 @@ public class BookDaoJdbc implements BookDao {
     public long insert(Book book) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         MapSqlParameterSource params = new MapSqlParameterSource();
-        params.addValue("author_id", book.getAuthorId());
-        params.addValue("genre_id", book.getGenreId());
+        params.addValue("author_id", book.getAuthor().getId());
+        params.addValue("genre_id", book.getGenre().getId());
         params.addValue("book_name", book.getBookName());
         params.addValue("publish_date", book.getPublishDate());
         params.addValue("language", book.getLanguage());
@@ -92,20 +100,24 @@ public class BookDaoJdbc implements BookDao {
         );
     }
 
-    private static class BookMapper implements RowMapper<Book> {
+    private class BookMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet resultSet, int i) throws SQLException {
             long id = resultSet.getLong("id");
             long authorId = resultSet.getLong("author_id");
+            Author author = BookDaoJdbc.this.authorDao.getById(authorId);
+
             long genreId = resultSet.getLong("genre_id");
+            Genre genre = BookDaoJdbc.this.genreDao.getById(genreId);
+
             String bookName = resultSet.getString("book_name");
             Date publishDate = resultSet.getDate("publish_date");
             String language = resultSet.getString("language");
             String publishingHouse = resultSet.getString("publishing_house");
             String city = resultSet.getString("city");
             String isbn = resultSet.getString("isbn");
-            return new Book(id, authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
+            return new Book(id, author, genre, bookName, publishDate, language, publishingHouse, city, isbn);
         }
     }
 }
