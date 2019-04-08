@@ -10,10 +10,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import ru.otus.libraryapp.dao.BookDao;
+import ru.otus.libraryapp.domain.Author;
+import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.BookService;
 
+import java.util.Date;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @DisplayName("Test for Book Service")
 @SpringBootTest
@@ -28,8 +36,16 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Test invoke get book by id")
     void shouldGetBookById() {
-        bookService.getById(1);
+        Book bookMock = new Book(new Author(5, "", null, ""),
+                new Genre(5, ""), "Book",
+                new Date(), "russian",
+                "Test", "Test", "555-555");
+        when(bookDao.getById(any(Long.class))).thenReturn(bookMock);
+
+        Book book = bookService.getById(1);
+
         verify(bookDao, times(1)).getById(1);
+        assertEquals(bookMock, book);
     }
 
     @Test
@@ -49,7 +65,7 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Test invoke insert new book")
     void shouldInsertNewBook() {
-        bookService.insert(1, 1, "Book",
+        bookService.insert(5, 5, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
         verify(bookDao, times(1)).insert(ArgumentMatchers.any());
