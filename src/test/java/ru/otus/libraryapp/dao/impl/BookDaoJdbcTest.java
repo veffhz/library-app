@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.dao.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@DisplayName("Test for BookDaoJdbcTest")
 @JdbcTest
 @ComponentScan
 class BookDaoJdbcTest {
@@ -24,13 +26,15 @@ class BookDaoJdbcTest {
     private BookDao bookDao;
 
     @Test
-    void count() {
+    @DisplayName("Test return count books")
+    void shouldReturnCorrectCount() {
         int count = bookDao.count();
         assertEquals(count, 2);
     }
 
     @Test
-    void insert() {
+    @DisplayName("Test insert new book")
+    void shouldInsertNewBook() {
         bookDao.insert(
                 new Book(new Author(5, "", null, ""),
                         new Genre(5, ""), "Book",
@@ -40,13 +44,15 @@ class BookDaoJdbcTest {
     }
 
     @Test
-    void getById() {
+    @DisplayName("Test get book by id")
+    void shouldGetBookById() {
         Book book = bookDao.getById(5);
         assertEquals(book.getBookName(), "Best");
     }
 
     @Test
-    void getByBookName() {
+    @DisplayName("Test get book by name")
+    void shouldGetBookByName() {
         List<Book> books = bookDao.getByBookName("Best");
         assertEquals(books.size(), 1);
 
@@ -55,13 +61,15 @@ class BookDaoJdbcTest {
     }
 
     @Test
-    void getByBookPartName() {
+    @DisplayName("Test get books by part name")
+    void shouldGetBooksByPartName() {
         List<Book> books = bookDao.getByBookPartName("est");
         assertEquals(books.size(), 2);
     }
 
     @Test
-    void getAll() {
+    @DisplayName("Test get all books")
+    void shouldGetAllBooks() {
         List<Book> books = bookDao.getAll();
         Book book = books.get(0);
 
@@ -73,7 +81,8 @@ class BookDaoJdbcTest {
     }
 
     @Test
-    void deleteById() {
+    @DisplayName("Test delete book by id")
+    void shouldDeleteBookById() {
         bookDao.deleteById(7);
         assertEquals(bookDao.count(), 1);
     }
