@@ -4,15 +4,13 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.service.BookService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = "spring.shell.interactive.enabled=false")
-@TestPropertySource("classpath:application-test.yml")
+@SpringBootTest
 class BookServiceImplTest {
 
     @Autowired

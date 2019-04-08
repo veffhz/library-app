@@ -3,15 +3,13 @@ package ru.otus.libraryapp.service.impl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.TestPropertySource;
 
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(properties = "spring.shell.interactive.enabled=false")
-@TestPropertySource("classpath:application-test.yml")
+@SpringBootTest
 class GenreServiceImplTest {
 
     @Autowired
