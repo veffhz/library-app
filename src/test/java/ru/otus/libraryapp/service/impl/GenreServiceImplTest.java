@@ -1,13 +1,18 @@
 package ru.otus.libraryapp.service.impl;
 
 import org.junit.jupiter.api.Test;
+
+import org.mockito.ArgumentMatchers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.domain.Genre;
+import ru.otus.libraryapp.dao.GenreDao;
 import ru.otus.libraryapp.service.GenreService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class GenreServiceImplTest {
@@ -15,33 +20,30 @@ class GenreServiceImplTest {
     @Autowired
     private GenreService genreService;
 
+    @MockBean
+    private GenreDao genreDao;
+
     @Test
     void getById() {
-        Genre genre = genreService.getById(1);
-        assertEquals(genre.getGenreName(), "Фантастика");
+        genreService.getById(1);
+        verify(genreDao, times(1)).getById(1);
     }
 
     @Test
     void getAll() {
-        int size = genreService.count();
-        assertEquals(size, 1);
+        genreService.getAll();
+        verify(genreDao, times(1)).getAll();
     }
 
     @Test
     void deleteById() {
-        int size = genreService.count();
-        long id = genreService.insert("Test");
-        genreService.deleteById(id);
-        int newSize = genreService.count();
-        assertEquals(newSize, size);
+        genreService.deleteById(1);
+        verify(genreDao, times(1)).deleteById(1);
     }
 
     @Test
     void insert() {
-        long id = genreService.insert("Name");
-        Genre author = genreService.getById(id);
-        assertEquals(author.getGenreName(), "Name");
-
-        genreService.deleteById(id);
+        genreService.insert("test");
+        verify(genreDao, times(1)).insert(ArgumentMatchers.any());
     }
 }

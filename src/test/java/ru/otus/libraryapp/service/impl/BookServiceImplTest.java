@@ -2,13 +2,17 @@ package ru.otus.libraryapp.service.impl;
 
 import org.junit.jupiter.api.Test;
 
+import org.mockito.ArgumentMatchers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.dao.BookDao;
 import ru.otus.libraryapp.service.BookService;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @SpringBootTest
 class BookServiceImplTest {
@@ -16,37 +20,32 @@ class BookServiceImplTest {
     @Autowired
     private BookService bookService;
 
+    @MockBean
+    private BookDao bookDao;
+
     @Test
     void getById() {
-        Book book = bookService.getById(1);
-        assertEquals(book.getBookName(), "Избранное");
+        bookService.getById(1);
+        verify(bookDao, times(1)).getById(1);
     }
 
     @Test
     void getAll() {
-        int size = bookService.count();
-        assertEquals(size, 1);
+        bookService.getAll();
+        verify(bookDao, times(1)).getAll();
     }
 
     @Test
     void deleteById() {
-        int size = bookService.count();
-        long id = bookService.insert(1, 1, "Book",
-                "1901-01-01", "russian",
-                "Test", "Test", "555-555");
-        bookService.deleteById(id);
-        int newSize = bookService.count();
-        assertEquals(newSize, size);
+        bookService.deleteById(1);
+        verify(bookDao, times(1)).deleteById(1);
     }
 
     @Test
     void insert() {
-        long id = bookService.insert(1, 1, "Book",
+        bookService.insert(1, 1, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
-        Book book = bookService.getById(id);
-        assertEquals(book.getBookName(), "Book");
-
-        bookService.deleteById(id);
+        verify(bookDao, times(1)).insert(ArgumentMatchers.any());
     }
 }

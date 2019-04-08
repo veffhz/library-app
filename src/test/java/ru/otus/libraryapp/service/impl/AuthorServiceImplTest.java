@@ -2,13 +2,18 @@ package ru.otus.libraryapp.service.impl;
 
 import org.junit.jupiter.api.Test;
 
+import org.mockito.ArgumentMatchers;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.domain.Author;
+import ru.otus.libraryapp.dao.AuthorDao;
 import ru.otus.libraryapp.service.AuthorService;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+
 
 @SpringBootTest
 class AuthorServiceImplTest {
@@ -16,35 +21,30 @@ class AuthorServiceImplTest {
     @Autowired
     private AuthorService authorService;
 
+    @MockBean
+    private AuthorDao authorDao;
+
     @Test
     void getById() {
-        Author author = authorService.getById(1);
-        assertEquals(author.getFirstName(), "Роберт");
-        assertEquals(author.getLastName(), "Шекли");
+        authorService.getById(1);
+        verify(authorDao, times(1)).getById(1);
     }
 
     @Test
     void getAll() {
-        int size = authorService.count();
-        assertEquals(size, 1);
+        authorService.getAll();
+        verify(authorDao, times(1)).getAll();
     }
 
     @Test
     void deleteById() {
-        int size = authorService.count();
-        long id = authorService.insert("Test", null, "Test");
-        authorService.deleteById(id);
-        int newSize = authorService.count();
-        assertEquals(newSize, size);
+        authorService.deleteById(1);
+        verify(authorDao, times(1)).deleteById(1);
     }
 
     @Test
     void insert() {
-        long id = authorService.insert("Name", null, "Test");
-        Author author = authorService.getById(id);
-        assertEquals(author.getFirstName(), "Name");
-        assertEquals(author.getLastName(), "Test");
-
-        authorService.deleteById(id);
+        authorService.insert("test", "test", "test");
+        verify(authorDao, times(1)).insert(ArgumentMatchers.any());
     }
 }
