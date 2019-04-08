@@ -41,6 +41,14 @@ class AuthorDaoJdbcTest {
 
     @Test
     void getByLastName() {
+        List<Author> authors = authorDao.getByLastName("LastName");
+
+        assertEquals(authors.size(), 1);
+
+        Author author = authors.get(0);
+
+        assertEquals(author.getFirstName(), "FirstName");
+        assertEquals(author.getLastName(), "LastName");
     }
 
     @Test
