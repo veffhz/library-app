@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -14,7 +15,7 @@ import ru.otus.libraryapp.service.AuthorService;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-
+@DisplayName("Test for Author Service")
 @SpringBootTest
 class AuthorServiceImplTest {
 
@@ -25,25 +26,29 @@ class AuthorServiceImplTest {
     private AuthorDao authorDao;
 
     @Test
-    void getById() {
+    @DisplayName("Test invoke get author by id")
+    void shouldGetAuthorById() {
         authorService.getById(1);
         verify(authorDao, times(1)).getById(1);
     }
 
     @Test
-    void getAll() {
+    @DisplayName("Test invoke get all authors")
+    void shouldGetAllAuthors() {
         authorService.getAll();
         verify(authorDao, times(1)).getAll();
     }
 
     @Test
-    void deleteById() {
+    @DisplayName("Test invoke delete author by id")
+    void shouldDeleteAuthorById() {
         authorService.deleteById(1);
         verify(authorDao, times(1)).deleteById(1);
     }
 
     @Test
-    void insert() {
+    @DisplayName("Test invoke insert new author")
+    void shouldInsertNewAuthor() {
         authorService.insert("test", "test", "test");
         verify(authorDao, times(1)).insert(ArgumentMatchers.any());
     }

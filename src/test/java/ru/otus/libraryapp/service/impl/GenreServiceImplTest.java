@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.service.impl;
 
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.mockito.ArgumentMatchers;
@@ -14,6 +15,7 @@ import ru.otus.libraryapp.service.GenreService;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+@DisplayName("Test for Genre Service")
 @SpringBootTest
 class GenreServiceImplTest {
 
@@ -24,25 +26,29 @@ class GenreServiceImplTest {
     private GenreDao genreDao;
 
     @Test
-    void getById() {
+    @DisplayName("Test invoke get genre by id")
+    void shouldGetGenreById() {
         genreService.getById(1);
         verify(genreDao, times(1)).getById(1);
     }
 
     @Test
-    void getAll() {
+    @DisplayName("Test invoke get all genre")
+    void shouldGetAllGenres() {
         genreService.getAll();
         verify(genreDao, times(1)).getAll();
     }
 
     @Test
-    void deleteById() {
+    @DisplayName("Test invoke delete genre by id")
+    void shouldDeleteGenreById() {
         genreService.deleteById(1);
         verify(genreDao, times(1)).deleteById(1);
     }
 
     @Test
-    void insert() {
+    @DisplayName("Test invoke insert new genre")
+    void shouldInsertNewGenre() {
         genreService.insert("test");
         verify(genreDao, times(1)).insert(ArgumentMatchers.any());
     }
