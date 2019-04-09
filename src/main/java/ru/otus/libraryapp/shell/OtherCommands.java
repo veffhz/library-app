@@ -29,19 +29,31 @@ public class OtherCommands {
     @ShellMethod("Show all info.")
     public String info() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Total:");
         sb.append("\n");
+        sb.append("Total:");
         sb.append("\nauthors: ").append(authorService.count());
         sb.append("\n");
-        authorService.getAll().forEach(author -> sb.append(author.toString()));
-        sb.append("\n");
+        authorService.getAll().forEach(author -> sb.append(author.toString()).append("\n"));
         sb.append("\ngenres: ").append(genreService.count());
         sb.append("\n");
-        genreService.getAll().forEach(genre -> sb.append(genre.toString()));
-        sb.append("\n");
+        genreService.getAll().forEach(genre -> sb.append(genre.toString()).append("\n"));
         sb.append("\nbooks: ").append(bookService.count());
         sb.append("\n");
-        bookService.getAll().forEach(book -> sb.append(book.toString()));
+        bookService.getAll().forEach(book -> sb.append(book.toString()).append("\n"));
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    @ShellMethod(value = "Create test data.", key = "create-data")
+    public String test() {
+        StringBuilder sb = new StringBuilder();
+        long authorId = authorService.insert("Роберт", null, "Шекли");
+        sb.append("\ncreated authorId: ").append(authorId);
+        long genreId = genreService.insert("Фантастика");
+        sb.append("\ncreated genreId: ").append(genreId);
+        long bookId = bookService.insert(authorId, genreId, "Избранное", "1991-01-01",
+                "Русский", "Мир", "Москва", "5-03002745-9");
+        sb.append("\ncreated bookId: ").append(bookId);
         sb.append("\n");
         return sb.toString();
     }

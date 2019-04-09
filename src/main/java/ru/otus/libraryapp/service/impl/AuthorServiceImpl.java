@@ -4,7 +4,7 @@ import org.apache.logging.log4j.util.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.otus.libraryapp.dao.AuthorDao;
+import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
@@ -13,15 +13,15 @@ import java.util.List;
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorDao dao;
+    private final AuthorRepository dao;
 
     @Autowired
-    public AuthorServiceImpl(AuthorDao dao) {
+    public AuthorServiceImpl(AuthorRepository dao) {
         this.dao = dao;
     }
 
     @Override
-    public int count() {
+    public long count() {
         return dao.count();
     }
 

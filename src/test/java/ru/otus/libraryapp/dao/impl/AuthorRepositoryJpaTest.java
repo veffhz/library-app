@@ -1,45 +1,55 @@
 package ru.otus.libraryapp.dao.impl;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.ComponentScan;
 
-import ru.otus.libraryapp.dao.AuthorDao;
+import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test for AuthorDaoJdbc")
-@JdbcTest
+@DisplayName("Test for AuthorRepositoryJpa")
+@DataJpaTest
 @ComponentScan
-class AuthorDaoJdbcTest {
+class AuthorRepositoryJpaTest {
+
+    private long[] ids = new long[3];
 
     @Autowired
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
+
+    @BeforeEach
+    void setUp() {
+        ids[0] = authorRepository.insert(new Author("FirstName", null, "LastName"));
+        ids[1] = authorRepository.insert(new Author("FirstName7", null, "LastName7"));
+        ids[2] = authorRepository.insert(new Author("FirstName9", null, "LastName9"));
+    }
 
     @Test
     @DisplayName("Test return count authors")
     void shouldReturnCorrectCount() {
-        int count = authorDao.count();
+        long count = authorRepository.count();
         assertEquals(count, 3);
     }
 
     @Test
     @DisplayName("Test insert new author")
     void shouldInsertNewAuthor() {
-        authorDao.insert(new Author("test", "test", "test"));
-        assertEquals(authorDao.count(), 4);
+        authorRepository.insert(new Author("test", "test", "test"));
+        assertEquals(authorRepository.count(), 4);
     }
 
     @Test
     @DisplayName("Test get author by id")
     void shouldGetAuthorById() {
-        Author author = authorDao.getById(5);
+        Author author = authorRepository.getById(ids[0]);
         assertEquals(author.getFirstName(), "FirstName");
         assertEquals(author.getLastName(), "LastName");
     }
@@ -47,7 +57,7 @@ class AuthorDaoJdbcTest {
     @Test
     @DisplayName("Test get author by last name")
     void shouldGetAuthorsByLastName() {
-        List<Author> authors = authorDao.getByLastName("LastName");
+        List<Author> authors = authorRepository.getByLastName("LastName");
 
         assertEquals(authors.size(), 1);
 
@@ -60,7 +70,7 @@ class AuthorDaoJdbcTest {
     @Test
     @DisplayName("Test get all authors")
     void shouldGetAllAuthors() {
-        List<Author> authors = authorDao.getAll();
+        List<Author> authors = authorRepository.getAll();
         Author author = authors.get(0);
 
         assertEquals(author.getFirstName(), "FirstName");
@@ -75,7 +85,14 @@ class AuthorDaoJdbcTest {
     @Test
     @DisplayName("Test delete author by id")
     void shouldDeleteAuthorById() {
-        authorDao.deleteById(9);
-        assertEquals(authorDao.count(), 2);
+        authorRepository.deleteById(ids[2]);
+        assertEquals(authorRepository.count(), 2);
+    }
+
+    @Test
+    @DisplayName("Test delete author")
+    void shouldDeleteAuthor() {
+        authorRepository.delete(authorRepository.getById(ids[0]));
+        assertEquals(authorRepository.count(), 2);
     }
 }

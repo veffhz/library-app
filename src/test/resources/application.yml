@@ -1,6 +1,4 @@
 spring:
-  datasource:
-    data: testdata.sql
   shell:
     interactive:
       enabled: false

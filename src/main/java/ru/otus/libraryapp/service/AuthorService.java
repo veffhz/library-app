@@ -5,7 +5,7 @@ import ru.otus.libraryapp.domain.Author;
 import java.util.List;
 
 public interface AuthorService {
-    int count();
+    long count();
     Author getById(long id);
     List<Author> getByLastName(String name);
     List<Author> getAll();

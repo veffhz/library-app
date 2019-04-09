@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.dao.AuthorDao;
+import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
@@ -27,17 +27,17 @@ class AuthorServiceImplTest {
     private AuthorService authorService;
 
     @MockBean
-    private AuthorDao authorDao;
+    private AuthorRepository authorRepository;
 
     @Test
     @DisplayName("Test invoke get author by id")
     void shouldGetAuthorById() {
         Author authorMock = new Author("test", "test", "test");
-        when(authorDao.getById(any(Long.class))).thenReturn(authorMock);
+        when(authorRepository.getById(any(Long.class))).thenReturn(authorMock);
 
         Author author = authorService.getById(1);
 
-        verify(authorDao, times(1)).getById(1);
+        verify(authorRepository, times(1)).getById(1);
         assertEquals(authorMock, author);
     }
 
@@ -45,20 +45,20 @@ class AuthorServiceImplTest {
     @DisplayName("Test invoke get all authors")
     void shouldGetAllAuthors() {
         authorService.getAll();
-        verify(authorDao, times(1)).getAll();
+        verify(authorRepository, times(1)).getAll();
     }
 
     @Test
     @DisplayName("Test invoke delete author by id")
     void shouldDeleteAuthorById() {
         authorService.deleteById(1);
-        verify(authorDao, times(1)).deleteById(1);
+        verify(authorRepository, times(1)).deleteById(1);
     }
 
     @Test
     @DisplayName("Test invoke insert new author")
     void shouldInsertNewAuthor() {
         authorService.insert("test", "test", "test");
-        verify(authorDao, times(1)).insert(ArgumentMatchers.any());
+        verify(authorRepository, times(1)).insert(ArgumentMatchers.any());
     }
 }
