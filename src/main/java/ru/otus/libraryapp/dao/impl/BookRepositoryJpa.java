@@ -4,6 +4,7 @@ import org.springframework.stereotype.Repository;
 
 import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.domain.Comment;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +12,9 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 @Transactional
@@ -69,6 +72,41 @@ public class BookRepositoryJpa implements BookRepository {
                 Book.class);
         query.setParameter("bookName", bookName);
         return query.getResultList();
+    }
+
+    @Override
+    public Comment getCommentById(long id) {
+        return em.find(Comment.class, id);
+    }
+
+    @Override
+    public List<Comment> getByBookId(long id) {
+        Book book = getById(id);
+        return Objects.isNull(book) ? Collections.emptyList() : book.getComments();
+    }
+
+    @Override
+    public long insert(Comment comment, long bookId) {
+        Book book = getById(bookId);
+        comment.setBook(book);
+        book.getComments().add(comment);
+        Book merge = em.merge(book);
+        Comment saveComment = merge.getComments().get(book.getComments().size() - 1);
+        return saveComment.getId();
+    }
+
+    @Override
+    public void deleteCommentById(long id) {
+        Query query = em.createQuery("delete from Comment c where c.id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
+    }
+
+    @Override
+    public void deleteByBookId(long bookId) {
+        Book book = getById(bookId);
+        book.getComments().clear();
+        em.merge(book);
     }
 
 }

@@ -1,6 +1,7 @@
 package ru.otus.libraryapp.dao;
 
 import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.domain.Comment;
 
 import java.util.List;
 
@@ -13,4 +14,10 @@ public interface BookRepository {
     List<Book> getAll();
     void delete(Book book);
     void deleteById(long id);
+
+    Comment getCommentById(long id);
+    List<Comment> getByBookId(long id);
+    long insert(Comment comment, long bookId);
+    void deleteCommentById(long bookId);
+    void deleteByBookId(long bookId);
 }
