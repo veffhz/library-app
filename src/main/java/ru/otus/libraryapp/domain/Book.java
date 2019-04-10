@@ -1,15 +1,14 @@
 package ru.otus.libraryapp.domain;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor
 @Entity
 @ToString(exclude = "comments")
 public class Book {
@@ -33,9 +32,14 @@ public class Book {
     private String city;
     private String isbn;
 
+    public Book() {
+        this.comments = new ArrayList<>();
+    }
+
     public Book(Author author, Genre genre, String bookName,
                 Date publishDate, String language,
                 String publishingHouse, String city, String isbn) {
+        this.comments = new ArrayList<>();
         this.author = author;
         this.genre = genre;
         this.bookName = bookName;

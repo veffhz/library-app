@@ -13,6 +13,7 @@ import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
+import ru.otus.libraryapp.domain.Comment;
 import ru.otus.libraryapp.domain.Genre;
 
 import java.util.Date;
@@ -116,5 +117,19 @@ class BookRepositoryJdbcTest {
     void shouldDeleteBook() {
         bookRepository.delete(bookRepository.getById(ids[0]));
         assertEquals(bookRepository.count(), 1);
+    }
+
+    @Test
+    @DisplayName("Test add comment")
+    void shouldAddCommentToBook() {
+        Comment comment = new Comment("author", new Date(), "content");
+        Book book = bookRepository.getById(ids[0]);
+
+        comment.setBook(book);
+        bookRepository.insert(comment, book.getId());
+
+        List<Comment> comments = bookRepository.getByBookId(ids[0]);
+
+        assertEquals(comments.size(), 1);
     }
 }
