@@ -1,6 +1,5 @@
 package ru.otus.libraryapp.dao.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -11,10 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.dao.GenreRepository;
-import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Comment;
-import ru.otus.libraryapp.domain.Genre;
 
 import java.util.Date;
 import java.util.List;
@@ -26,8 +23,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @ComponentScan
 class BookRepositoryJdbcTest {
 
-    private long[] ids = new long[3];
-
     @Autowired
     private BookRepository bookRepository;
 
@@ -36,19 +31,6 @@ class BookRepositoryJdbcTest {
 
     @Autowired
     private GenreRepository genreRepository;
-
-    @BeforeEach
-    void setUp() {
-        Author author = new Author("First", null, "Last");
-        authorRepository.insert(author);
-        Genre genre = new Genre("Test");
-        genreRepository.insert(genre);
-
-        ids[0] = bookRepository.insert(new Book(author, genre, "Best", new Date(), "russian",
-                "Test", "Test", "555-555"));
-        ids[1] = bookRepository.insert(new Book(author, genre, "Best7", new Date(), "russian",
-                "Test", "Test", "555-555"));
-    }
 
     @Test
     @DisplayName("Test return count books")
@@ -61,8 +43,7 @@ class BookRepositoryJdbcTest {
     @DisplayName("Test insert new book")
     void shouldInsertNewBook() {
         bookRepository.insert(
-                new Book(authorRepository.getByLastName("Last").get(0),
-                        genreRepository.getByGenreName("Test").get(0),
+                new Book(authorRepository.getById(5), genreRepository.getById(5),
                         "Best", new Date(), "russian",
                         "Test", "Test", "555-555"));
         assertEquals(bookRepository.count(), 3);
@@ -71,7 +52,7 @@ class BookRepositoryJdbcTest {
     @Test
     @DisplayName("Test get book by id")
     void shouldGetBookById() {
-        Book book = bookRepository.getById(ids[0]);
+        Book book = bookRepository.getById(5);
         assertEquals(book.getBookName(), "Best");
     }
 
@@ -108,14 +89,14 @@ class BookRepositoryJdbcTest {
     @Test
     @DisplayName("Test delete book by id")
     void shouldDeleteBookById() {
-        bookRepository.deleteById(ids[1]);
+        bookRepository.deleteById(7);
         assertEquals(bookRepository.count(), 1);
     }
 
     @Test
     @DisplayName("Test delete book")
     void shouldDeleteBook() {
-        bookRepository.delete(bookRepository.getById(ids[0]));
+        bookRepository.delete(bookRepository.getById(7));
         assertEquals(bookRepository.count(), 1);
     }
 
@@ -123,12 +104,12 @@ class BookRepositoryJdbcTest {
     @DisplayName("Test add comment")
     void shouldAddCommentToBook() {
         Comment comment = new Comment("author", new Date(), "content");
-        Book book = bookRepository.getById(ids[0]);
+        Book book = bookRepository.getById(5);
 
         comment.setBook(book);
         bookRepository.insert(comment, book.getId());
 
-        List<Comment> comments = bookRepository.getByBookId(ids[0]);
+        List<Comment> comments = bookRepository.getByBookId(5);
 
         assertEquals(comments.size(), 1);
     }

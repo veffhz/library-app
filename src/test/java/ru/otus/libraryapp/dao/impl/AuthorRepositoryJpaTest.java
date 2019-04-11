@@ -1,6 +1,5 @@
 package ru.otus.libraryapp.dao.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,17 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ComponentScan
 class AuthorRepositoryJpaTest {
 
-    private long[] ids = new long[3];
-
     @Autowired
     private AuthorRepository authorRepository;
-
-    @BeforeEach
-    void setUp() {
-        ids[0] = authorRepository.insert(new Author("FirstName", null, "LastName"));
-        ids[1] = authorRepository.insert(new Author("FirstName7", null, "LastName7"));
-        ids[2] = authorRepository.insert(new Author("FirstName9", null, "LastName9"));
-    }
 
     @Test
     @DisplayName("Test return count authors")
@@ -49,7 +39,7 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test get author by id")
     void shouldGetAuthorById() {
-        Author author = authorRepository.getById(ids[0]);
+        Author author = authorRepository.getById(5);
         assertEquals(author.getFirstName(), "FirstName");
         assertEquals(author.getLastName(), "LastName");
     }
@@ -85,14 +75,14 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test delete author by id")
     void shouldDeleteAuthorById() {
-        authorRepository.deleteById(ids[2]);
+        authorRepository.deleteById(9);
         assertEquals(authorRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete author")
     void shouldDeleteAuthor() {
-        authorRepository.delete(authorRepository.getById(ids[0]));
+        authorRepository.delete(authorRepository.getById(9));
         assertEquals(authorRepository.count(), 2);
     }
 }

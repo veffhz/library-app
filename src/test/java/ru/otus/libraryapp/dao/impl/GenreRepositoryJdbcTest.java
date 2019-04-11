@@ -1,6 +1,5 @@
 package ru.otus.libraryapp.dao.impl;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -20,17 +19,8 @@ import static org.junit.jupiter.api.Assertions.*;
 @ComponentScan
 class GenreRepositoryJdbcTest {
 
-    private long[] ids = new long[3];
-
     @Autowired
     private GenreRepository genreRepository;
-
-    @BeforeEach
-    void setUp() {
-        ids[0] = genreRepository.insert(new Genre("Genre"));
-        ids[1] = genreRepository.insert(new Genre("Genre7"));
-        ids[2] = genreRepository.insert(new Genre("Genre9"));
-    }
 
     @Test
     @DisplayName("Test return count genres")
@@ -49,7 +39,7 @@ class GenreRepositoryJdbcTest {
     @Test
     @DisplayName("Test get genre by id")
     void shouldGetGenreById() {
-        Genre genre = genreRepository.getById(ids[0]);
+        Genre genre = genreRepository.getById(5);
         assertEquals(genre.getGenreName(), "Genre");
     }
 
@@ -69,14 +59,14 @@ class GenreRepositoryJdbcTest {
     @Test
     @DisplayName("Test delete genre by id")
     void shouldDeleteGenreById() {
-        genreRepository.deleteById(ids[2]);
+        genreRepository.deleteById(9);
         assertEquals(genreRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete genre")
     void shouldDeleteGenre() {
-        genreRepository.delete(genreRepository.getById(ids[0]));
+        genreRepository.delete(genreRepository.getById(9));
         assertEquals(genreRepository.count(), 2);
     }
 }

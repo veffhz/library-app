@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Comment;
+import ru.otus.libraryapp.exception.BookNotFoundException;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -105,6 +106,9 @@ public class BookRepositoryJpa implements BookRepository {
     @Override
     public void deleteByBookId(long bookId) {
         Book book = getById(bookId);
+        if (Objects.isNull(book)) {
+            throw new BookNotFoundException();
+        }
         book.getComments().clear();
         em.merge(book);
     }
