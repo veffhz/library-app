@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.dao.impl;
 
+import org.hibernate.jpa.QueryHints;
 import org.springframework.stereotype.Repository;
 
 import ru.otus.libraryapp.dao.BookRepository;
@@ -43,7 +44,8 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
+        TypedQuery<Book> query = em.createQuery("select distinct b from Book b left join fetch b.comments", Book.class);
+        query.setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false);
         return query.getResultList();
     }
 
