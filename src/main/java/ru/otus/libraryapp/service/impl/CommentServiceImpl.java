@@ -1,7 +1,9 @@
 package ru.otus.libraryapp.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.otus.libraryapp.dao.CommentRepository;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Comment;
@@ -21,6 +23,7 @@ public class CommentServiceImpl implements CommentService {
 
     private final BookService bookService;
 
+    @Autowired
     public CommentServiceImpl(CommentRepository repository, BookService bookService) {
         this.repository = repository;
         this.bookService = bookService;
@@ -56,7 +59,8 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteByBookId(long bookId) {
-        repository.deleteByBookId(bookId);
+    @Transactional
+    public List<Comment> deleteByBookId(long bookId) {
+        return repository.deleteByBookId(bookId);
     }
 }

@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface CommentRepository extends CrudRepository<Comment, Long> {
     List<Comment> findByBookId(long bookId);
-    void deleteByBookId(long bookId);
+    List<Comment> deleteByBookId(long bookId);
     List<Comment> findAll();
 }

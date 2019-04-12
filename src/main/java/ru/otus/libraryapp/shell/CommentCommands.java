@@ -55,8 +55,12 @@ public class CommentCommands {
 
     @ShellMethod(value = "Delete comments by book id.", key = "delete-by-bookId")
     public String deleteByBookId(@ShellOption long bookId) {
-        commentService.deleteByBookId(bookId);
-        return "Deleted comment by bookId " + bookId;
+        List<Comment> comments = commentService.deleteByBookId(bookId);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Deleted comment by bookId: [ ");
+        comments.forEach(comment -> sb.append(comment.getId()).append(" "));
+        sb.append("]");
+        return sb.toString();
     }
 
 }

@@ -11,5 +11,5 @@ public interface CommentService {
     long insert(String author, String date, String content, long bookId);
     List<Comment> getAll();
     void deleteById(long id);
-    void deleteByBookId(long bookId);
+    List<Comment> deleteByBookId(long bookId);
 }
