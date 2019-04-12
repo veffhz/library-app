@@ -3,10 +3,11 @@ package ru.otus.libraryapp.service;
 import ru.otus.libraryapp.domain.Author;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AuthorService {
     long count();
-    Author getById(long id);
+    Optional<Author> getById(long id);
     List<Author> getByLastName(String name);
     List<Author> getAll();
     void deleteById(long id);

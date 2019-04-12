@@ -9,46 +9,49 @@ import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
-    private final AuthorRepository dao;
+    private final AuthorRepository repository;
 
     @Autowired
-    public AuthorServiceImpl(AuthorRepository dao) {
-        this.dao = dao;
+    public AuthorServiceImpl(AuthorRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public long count() {
-        return dao.count();
+        return repository.count();
     }
 
     @Override
-    public Author getById(long id) {
-        return dao.getById(id);
+    public Optional<Author> getById(long id) {
+        return repository.findById(id);
     }
 
     @Override
     public List<Author> getByLastName(String lastName) {
-        return dao.getByLastName(lastName);
+        return repository.findByLastName(lastName);
     }
 
     @Override
     public List<Author> getAll() {
-        return dao.getAll();
+        return repository.findAll();
     }
 
     @Override
     public void deleteById(long id) {
-        dao.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public long insert(String firstName, String middleName, String lastName) {
         Author author = new Author(firstName, Strings.isBlank(middleName) ? null : middleName, lastName);
-        return dao.insert(author);
+        Author authorDb = repository.save(author);
+        return Objects.nonNull(authorDb) ? authorDb.getId() : 0L;
     }
 
 }

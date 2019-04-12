@@ -13,11 +13,11 @@ import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @DisplayName("Test for Author Service")
 @SpringBootTest
@@ -33,11 +33,11 @@ class AuthorServiceImplTest {
     @DisplayName("Test invoke get author by id")
     void shouldGetAuthorById() {
         Author authorMock = new Author("test", "test", "test");
-        when(authorRepository.getById(any(Long.class))).thenReturn(authorMock);
+        when(authorRepository.findById(any(Long.class))).thenReturn(Optional.of(authorMock));
 
-        Author author = authorService.getById(1);
+        Author author = authorService.getById(1L).get();
 
-        verify(authorRepository, times(1)).getById(1);
+        verify(authorRepository, times(1)).findById(1L);
         assertEquals(authorMock, author);
     }
 
@@ -45,20 +45,21 @@ class AuthorServiceImplTest {
     @DisplayName("Test invoke get all authors")
     void shouldGetAllAuthors() {
         authorService.getAll();
-        verify(authorRepository, times(1)).getAll();
+        verify(authorRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Test invoke delete author by id")
     void shouldDeleteAuthorById() {
         authorService.deleteById(1);
-        verify(authorRepository, times(1)).deleteById(1);
+        verify(authorRepository, times(1)).deleteById(1L);
     }
 
     @Test
     @DisplayName("Test invoke insert new author")
     void shouldInsertNewAuthor() {
+        when(authorRepository.save(any(Author.class))).thenReturn(ArgumentMatchers.any());
         authorService.insert("test", "test", "test");
-        verify(authorRepository, times(1)).insert(ArgumentMatchers.any());
+        verify(authorRepository, times(1)).save(ArgumentMatchers.any());
     }
 }

@@ -32,14 +32,14 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test insert new author")
     void shouldInsertNewAuthor() {
-        authorRepository.insert(new Author("test", "test", "test"));
+        authorRepository.save(new Author("test", "test", "test"));
         assertEquals(authorRepository.count(), 4);
     }
 
     @Test
     @DisplayName("Test get author by id")
     void shouldGetAuthorById() {
-        Author author = authorRepository.getById(5);
+        Author author = authorRepository.findById(5L).get();
         assertEquals(author.getFirstName(), "FirstName");
         assertEquals(author.getLastName(), "LastName");
     }
@@ -47,7 +47,7 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test get author by last name")
     void shouldGetAuthorsByLastName() {
-        List<Author> authors = authorRepository.getByLastName("LastName");
+        List<Author> authors = authorRepository.findByLastName("LastName");
 
         assertEquals(authors.size(), 1);
 
@@ -60,7 +60,7 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test get all authors")
     void shouldGetAllAuthors() {
-        List<Author> authors = authorRepository.getAll();
+        List<Author> authors = authorRepository.findAll();
         Author author = authors.get(0);
 
         assertEquals(author.getFirstName(), "FirstName");
@@ -75,14 +75,14 @@ class AuthorRepositoryJpaTest {
     @Test
     @DisplayName("Test delete author by id")
     void shouldDeleteAuthorById() {
-        authorRepository.deleteById(9);
+        authorRepository.deleteById(9L);
         assertEquals(authorRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete author")
     void shouldDeleteAuthor() {
-        authorRepository.delete(authorRepository.getById(9));
+        authorRepository.delete(authorRepository.findById(9L).get());
         assertEquals(authorRepository.count(), 2);
     }
 }

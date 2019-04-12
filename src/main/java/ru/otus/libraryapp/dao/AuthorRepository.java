@@ -1,15 +1,11 @@
 package ru.otus.libraryapp.dao;
 
+import org.springframework.data.repository.CrudRepository;
 import ru.otus.libraryapp.domain.Author;
 
 import java.util.List;
 
-public interface AuthorRepository {
-    long count();
-    long insert(Author author);
-    Author getById(long id);
-    List<Author> getByLastName(String name);
-    List<Author> getAll();
-    void delete(Author author);
-    void deleteById(long id);
+public interface AuthorRepository extends CrudRepository<Author, Long> {
+    List<Author> findAll();
+    List<Author> findByLastName(String lastName);
 }

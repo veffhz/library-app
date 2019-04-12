@@ -14,6 +14,7 @@ import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
+import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
 
@@ -65,9 +66,9 @@ public class BookServiceImpl implements BookService {
     @Override
     public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
-        Author author = authorService.getById(authorId);
+        Optional<Author> author = authorService.getById(authorId);
         Genre genre = genreService.getById(genreId);
-        Book book = new Book(author, genre, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
+        Book book = new Book(author.orElse(new Author()), genre, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         return dao.insert(book);
     }
 

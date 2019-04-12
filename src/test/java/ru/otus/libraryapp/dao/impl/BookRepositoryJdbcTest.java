@@ -43,7 +43,7 @@ class BookRepositoryJdbcTest {
     @DisplayName("Test insert new book")
     void shouldInsertNewBook() {
         bookRepository.insert(
-                new Book(authorRepository.getById(5), genreRepository.getById(5),
+                new Book(authorRepository.findById(5L).get(), genreRepository.getById(5),
                         "Best", new Date(), "russian",
                         "Test", "Test", "555-555"));
         assertEquals(bookRepository.count(), 3);
