@@ -44,8 +44,7 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public List<Book> getAll() {
-        TypedQuery<Book> query = em.createQuery("select distinct b from Book b left join fetch b.comments", Book.class);
-        query.setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false);
+        TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
         return query.getResultList();
     }
 
@@ -83,19 +82,22 @@ public class BookRepositoryJpa implements BookRepository {
     }
 
     @Override
-    public List<Comment> getByBookId(long id) {
-        Book book = getById(id);
-        return Objects.isNull(book) ? Collections.emptyList() : book.getComments();
+    public List<Comment> getByBookId(long bookId) {
+        TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book.id = :bookId",
+                Comment.class);
+        query.setParameter("bookId", bookId);
+        return query.getResultList();
     }
 
     @Override
     public long insert(Comment comment, long bookId) {
         Book book = getById(bookId);
+        if (Objects.isNull(book)) {
+            throw new BookNotFoundException();
+        }
         comment.setBook(book);
-        book.getComments().add(comment);
-        Book merge = em.merge(book);
-        Comment saveComment = merge.getComments().get(book.getComments().size() - 1);
-        return saveComment.getId();
+        em.persist(comment);
+        return comment.getId();
     }
 
     @Override
@@ -107,12 +109,9 @@ public class BookRepositoryJpa implements BookRepository {
 
     @Override
     public void deleteByBookId(long bookId) {
-        Book book = getById(bookId);
-        if (Objects.isNull(book)) {
-            throw new BookNotFoundException();
-        }
-        book.getComments().clear();
-        em.merge(book);
+        Query query = em.createQuery("delete from Comment c where c.book.id = :bookId");
+        query.setParameter("bookId", bookId);
+        query.executeUpdate();
     }
 
 }

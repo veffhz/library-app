@@ -33,8 +33,8 @@ public class CommentCommands {
     }
 
     @ShellMethod("Show comments by book id.")
-    public String comments(@ShellOption long id) {
-        List<Comment> comments = commentService.getByBookId(id);
+    public String comments(@ShellOption long bookId) {
+        List<Comment> comments = commentService.getByBookId(bookId);
         return Arrays.toString(comments.toArray());
     }
 

@@ -2,15 +2,16 @@ package ru.otus.libraryapp.domain;
 
 import lombok.Getter;
 import lombok.ToString;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Entity
-@ToString(exclude = "comments")
+@NoArgsConstructor
+@ToString
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -22,24 +23,22 @@ public class Book {
     @ManyToOne
     private Genre genre;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comment> comments;
-
+    @Column
     private String bookName;
+    @Column
     private Date publishDate;
+    @Column
     private String language;
+    @Column
     private String publishingHouse;
+    @Column
     private String city;
+    @Column
     private String isbn;
-
-    public Book() {
-        this.comments = new ArrayList<>();
-    }
 
     public Book(Author author, Genre genre, String bookName,
                 Date publishDate, String language,
                 String publishingHouse, String city, String isbn) {
-        this.comments = new ArrayList<>();
         this.author = author;
         this.genre = genre;
         this.bookName = bookName;

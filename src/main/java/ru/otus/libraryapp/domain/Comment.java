@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @ToString(exclude = "book")
+@Table(name = "comments")
 public class Comment {
 
     @Id
@@ -21,9 +22,11 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     @Setter
     private Book book;
-
+    @Column
     private String author;
+    @Column
     private Date date;
+    @Column
     private String content;
 
     public Comment(String author, Date date, String content) {

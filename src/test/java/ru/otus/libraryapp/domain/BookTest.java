@@ -2,6 +2,7 @@ package ru.otus.libraryapp.domain;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
@@ -20,7 +21,9 @@ class BookTest {
 
     @Test
     public void saveAndGet() {
-        Book book = new Book(new Author(), new Genre(), "Best", new Date(), "russian",
+        Author authorFromDb = entityManager.find(Author.class, 5L);
+        Genre genreFromDb = entityManager.find(Genre.class, 5L);
+        Book book = new Book(authorFromDb, genreFromDb, "Best", new Date(), "russian",
                 "Test", "Test", "555-555");
         Long id = entityManager.persistAndGetId(book, Long.class);
         Book bookFromDb = entityManager.find(Book.class, id);

@@ -16,8 +16,8 @@ public interface BookRepository {
     void deleteById(long id);
 
     Comment getCommentById(long id);
-    List<Comment> getByBookId(long id);
+    List<Comment> getByBookId(long bookId);
     long insert(Comment comment, long bookId);
-    void deleteCommentById(long bookId);
+    void deleteCommentById(long id);
     void deleteByBookId(long bookId);
 }
