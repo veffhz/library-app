@@ -67,8 +67,8 @@ public class BookServiceImpl implements BookService {
     public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
         Optional<Author> author = authorService.getById(authorId);
-        Genre genre = genreService.getById(genreId);
-        Book book = new Book(author.orElse(new Author()), genre, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
+        Optional<Genre> genre = genreService.getById(genreId);
+        Book book = new Book(author.orElse(new Author()), genre.orElse(new Genre()), bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         return dao.insert(book);
     }
 

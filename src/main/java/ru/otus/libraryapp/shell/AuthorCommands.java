@@ -29,10 +29,7 @@ public class AuthorCommands {
     @ShellMethod("Show author by id.")
     public String author(@ShellOption long id) {
         Optional<Author> author = authorService.getById(id);
-        if (author.isPresent()) {
-            return author.toString();
-        }
-        return "author not found.";
+        return author.isPresent() ? author.toString() : "author not found.";
     }
 
     @ShellMethod(value = "Show authors by lastName.", key = "authors-lastName")

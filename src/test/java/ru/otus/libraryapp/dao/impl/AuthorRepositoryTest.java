@@ -14,10 +14,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test for AuthorRepositoryJpa")
+@DisplayName("Test for AuthorRepository")
 @DataJpaTest
 @ComponentScan
-class AuthorRepositoryJpaTest {
+class AuthorRepositoryTest {
 
     @Autowired
     private AuthorRepository authorRepository;

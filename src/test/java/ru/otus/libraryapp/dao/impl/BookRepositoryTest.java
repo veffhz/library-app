@@ -18,10 +18,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test for BookRepositoryJpa")
+@DisplayName("Test for BookRepository")
 @DataJpaTest
 @ComponentScan
-class BookRepositoryJdbcTest {
+class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;
@@ -43,7 +43,7 @@ class BookRepositoryJdbcTest {
     @DisplayName("Test insert new book")
     void shouldInsertNewBook() {
         bookRepository.insert(
-                new Book(authorRepository.findById(5L).get(), genreRepository.getById(5),
+                new Book(authorRepository.findById(5L).get(), genreRepository.findById(5L).get(),
                         "Best", new Date(), "russian",
                         "Test", "Test", "555-555"));
         assertEquals(bookRepository.count(), 3);

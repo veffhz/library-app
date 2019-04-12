@@ -11,6 +11,8 @@ import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -31,11 +33,11 @@ class GenreServiceImplTest {
     @DisplayName("Test invoke get genre by id")
     void shouldGetGenreById() {
         Genre genreMock = new Genre("test");
-        when(genreRepository.getById(any(Long.class))).thenReturn(genreMock);
+        when(genreRepository.findById(any(Long.class))).thenReturn(Optional.of(genreMock));
 
-        Genre genre = genreService.getById(1);
+        Genre genre = genreService.getById(1L).get();
 
-        verify(genreRepository, times(1)).getById(1);
+        verify(genreRepository, times(1)).findById(1L);
         assertEquals(genreMock, genre);
     }
 
@@ -43,20 +45,20 @@ class GenreServiceImplTest {
     @DisplayName("Test invoke get all genre")
     void shouldGetAllGenres() {
         genreService.getAll();
-        verify(genreRepository, times(1)).getAll();
+        verify(genreRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Test invoke delete genre by id")
     void shouldDeleteGenreById() {
         genreService.deleteById(1);
-        verify(genreRepository, times(1)).deleteById(1);
+        verify(genreRepository, times(1)).deleteById(1L);
     }
 
     @Test
     @DisplayName("Test invoke insert new genre")
     void shouldInsertNewGenre() {
         genreService.insert("test");
-        verify(genreRepository, times(1)).insert(any());
+        verify(genreRepository, times(1)).save(any());
     }
 }
