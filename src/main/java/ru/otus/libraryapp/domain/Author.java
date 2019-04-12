@@ -1,22 +1,32 @@
 package ru.otus.libraryapp.domain;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Getter
-@RequiredArgsConstructor
-@ToString
-public class Author {
-    private long id;
-    private final String firstName;
-    private final String middleName;
-    private final String lastName;
+import javax.persistence.*;
 
-    public Author(long id, String firstName, String middleName, String lastName) {
-        this.id = id;
+@Getter
+@NoArgsConstructor
+@Entity
+@ToString
+@Table(name = "authors")
+public class Author {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private String firstName;
+    @Column
+    private String middleName;
+    @Column
+    private String lastName;
+
+    public Author(String firstName, String middleName, String lastName) {
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
     }
+
 }

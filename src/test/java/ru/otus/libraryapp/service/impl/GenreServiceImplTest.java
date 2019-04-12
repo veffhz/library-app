@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.dao.GenreDao;
+import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
@@ -25,17 +25,17 @@ class GenreServiceImplTest {
     private GenreService genreService;
 
     @MockBean
-    private GenreDao genreDao;
+    private GenreRepository genreRepository;
 
     @Test
     @DisplayName("Test invoke get genre by id")
     void shouldGetGenreById() {
         Genre genreMock = new Genre("test");
-        when(genreDao.getById(any(Long.class))).thenReturn(genreMock);
+        when(genreRepository.getById(any(Long.class))).thenReturn(genreMock);
 
         Genre genre = genreService.getById(1);
 
-        verify(genreDao, times(1)).getById(1);
+        verify(genreRepository, times(1)).getById(1);
         assertEquals(genreMock, genre);
     }
 
@@ -43,20 +43,20 @@ class GenreServiceImplTest {
     @DisplayName("Test invoke get all genre")
     void shouldGetAllGenres() {
         genreService.getAll();
-        verify(genreDao, times(1)).getAll();
+        verify(genreRepository, times(1)).getAll();
     }
 
     @Test
     @DisplayName("Test invoke delete genre by id")
     void shouldDeleteGenreById() {
         genreService.deleteById(1);
-        verify(genreDao, times(1)).deleteById(1);
+        verify(genreRepository, times(1)).deleteById(1);
     }
 
     @Test
     @DisplayName("Test invoke insert new genre")
     void shouldInsertNewGenre() {
         genreService.insert("test");
-        verify(genreDao, times(1)).insert(any());
+        verify(genreRepository, times(1)).insert(any());
     }
 }

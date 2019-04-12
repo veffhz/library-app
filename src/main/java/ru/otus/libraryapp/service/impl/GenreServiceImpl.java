@@ -3,7 +3,7 @@ package ru.otus.libraryapp.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.otus.libraryapp.dao.GenreDao;
+import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
@@ -12,15 +12,15 @@ import java.util.List;
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreDao dao;
+    private final GenreRepository dao;
 
     @Autowired
-    public GenreServiceImpl(GenreDao dao) {
+    public GenreServiceImpl(GenreRepository dao) {
         this.dao = dao;
     }
 
     @Override
-    public int count() {
+    public long count() {
         return dao.count();
     }
 

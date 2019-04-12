@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import ru.otus.libraryapp.dao.BookDao;
+import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Genre;
@@ -31,20 +31,20 @@ class BookServiceImplTest {
     private BookService bookService;
 
     @MockBean
-    private BookDao bookDao;
+    private BookRepository bookRepository;
 
     @Test
     @DisplayName("Test invoke get book by id")
     void shouldGetBookById() {
-        Book bookMock = new Book(new Author(5, "", null, ""),
-                new Genre(5, ""), "Book",
+        Book bookMock = new Book(new Author("", null, ""),
+                new Genre(""), "Book",
                 new Date(), "russian",
                 "Test", "Test", "555-555");
-        when(bookDao.getById(any(Long.class))).thenReturn(bookMock);
+        when(bookRepository.getById(any(Long.class))).thenReturn(bookMock);
 
         Book book = bookService.getById(1);
 
-        verify(bookDao, times(1)).getById(1);
+        verify(bookRepository, times(1)).getById(1);
         assertEquals(bookMock, book);
     }
 
@@ -52,14 +52,14 @@ class BookServiceImplTest {
     @DisplayName("Test invoke get all books")
     void shouldGetAllBooks() {
         bookService.getAll();
-        verify(bookDao, times(1)).getAll();
+        verify(bookRepository, times(1)).getAll();
     }
 
     @Test
     @DisplayName("Test invoke delete book by id")
     void shouldDeleteBookById() {
         bookService.deleteById(1);
-        verify(bookDao, times(1)).deleteById(1);
+        verify(bookRepository, times(1)).deleteById(1);
     }
 
     @Test
@@ -68,6 +68,6 @@ class BookServiceImplTest {
         bookService.insert(5, 5, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
-        verify(bookDao, times(1)).insert(ArgumentMatchers.any());
+        verify(bookRepository, times(1)).insert(ArgumentMatchers.any());
     }
 }

@@ -1,18 +1,26 @@
 package ru.otus.libraryapp.domain;
 
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@Getter
-@RequiredArgsConstructor
-@ToString
-public class Genre {
-    private long id;
-    private final String genreName;
+import javax.persistence.*;
 
-    public Genre(long id, String genreName) {
-        this.id = id;
+@Getter
+@NoArgsConstructor
+@Entity
+@ToString
+@Table(name = "genres")
+public class Genre {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Column
+    private String genreName;
+
+    public Genre(String genreName) {
         this.genreName = genreName;
     }
+
 }

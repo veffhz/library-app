@@ -1,46 +1,40 @@
 package ru.otus.libraryapp.service.impl;
 
 import lombok.extern.java.Log;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.otus.libraryapp.dao.BookDao;
+import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Genre;
-import ru.otus.libraryapp.exception.BookDateParseException;
 import ru.otus.libraryapp.service.AuthorService;
 import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
+
+import static ru.otus.libraryapp.service.impl.Utils.toDate;
 
 @Log
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookDao dao;
+    private final BookRepository dao;
 
     private final AuthorService authorService;
     private final GenreService genreService;
 
-    private static final String DATE_FORMAT = "dd-MM-yyyy";
-
-    private final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
-
     @Autowired
-    public BookServiceImpl(BookDao dao, AuthorService authorService, GenreService genreService) {
+    public BookServiceImpl(BookRepository dao, AuthorService authorService, GenreService genreService) {
         this.dao = dao;
         this.authorService = authorService;
         this.genreService = genreService;
     }
 
     @Override
-    public int count() {
+    public long count() {
         return dao.count();
     }
 
@@ -75,15 +69,6 @@ public class BookServiceImpl implements BookService {
         Genre genre = genreService.getById(genreId);
         Book book = new Book(author, genre, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         return dao.insert(book);
-    }
-
-    private Date toDate(String date) {
-        try {
-            return dateFormat.parse(date);
-        } catch (ParseException e) {
-            log.warning(e.getMessage());
-            throw new BookDateParseException(e);
-        }
     }
 
 }

@@ -1,4 +1,7 @@
 spring:
+  jpa:
+    hibernate:
+      ddl-auto: none
   datasource:
     data: testdata.sql
   shell:
