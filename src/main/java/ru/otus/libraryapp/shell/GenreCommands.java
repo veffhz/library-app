@@ -28,7 +28,7 @@ public class GenreCommands {
     @ShellMethod("Show genre on id.")
     public String genre(@ShellOption long id) {
         Optional<Genre> genre = genreService.getById(id);
-        return genre.isPresent() ? genre.toString() : "genre not found.";
+        return genre.isPresent() ? genre.get().toString() : "genre not found.";
     }
 
     @ShellMethod(value = "Show genres by genreName.", key = "genre-name")

@@ -18,49 +18,47 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-@Repository
-@Transactional
-public class BookRepositoryJpa implements BookRepository {
+public class BookRepositoryJpa {
 
     @PersistenceContext
     private EntityManager em;
 
-    @Override
+    
     public long count() {
         Query query = em.createQuery("select count(b) from Book b", Long.class);
         return (Long) query.getSingleResult();
     }
 
-    @Override
+    
     public long insert(Book book) {
         em.persist(book);
         return book.getId();
     }
 
-    @Override
+    
     public Book getById(long id) {
         return em.find(Book.class, id);
     }
 
-    @Override
+    
     public List<Book> getAll() {
         TypedQuery<Book> query = em.createQuery("select b from Book b", Book.class);
         return query.getResultList();
     }
 
-    @Override
+    
     public void deleteById(long id) {
         Query query = em.createQuery("delete from Book b where b.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
-    @Override
+    
     public void delete(Book book) {
         em.remove(book);
     }
 
-    @Override
+    
     public List<Book> getByBookName(String bookName) {
         TypedQuery<Book> query = em.createQuery("select b from Book b where b.bookName = :bookName",
                 Book.class);
@@ -68,7 +66,7 @@ public class BookRepositoryJpa implements BookRepository {
         return query.getResultList();
     }
 
-    @Override
+    
     public List<Book> getByBookPartName(String bookName) {
         TypedQuery<Book> query = em.createQuery("select b from Book b where locate(:bookName, b.bookName) <> 0",
                 Book.class);
@@ -76,12 +74,12 @@ public class BookRepositoryJpa implements BookRepository {
         return query.getResultList();
     }
 
-    @Override
+    
     public Comment getCommentById(long id) {
         return em.find(Comment.class, id);
     }
 
-    @Override
+    
     public List<Comment> getByBookId(long bookId) {
         TypedQuery<Comment> query = em.createQuery("select c from Comment c where c.book.id = :bookId",
                 Comment.class);
@@ -89,7 +87,7 @@ public class BookRepositoryJpa implements BookRepository {
         return query.getResultList();
     }
 
-    @Override
+    
     public long insert(Comment comment, long bookId) {
         Book book = getById(bookId);
         if (Objects.isNull(book)) {
@@ -100,14 +98,14 @@ public class BookRepositoryJpa implements BookRepository {
         return comment.getId();
     }
 
-    @Override
+    
     public void deleteCommentById(long id) {
         Query query = em.createQuery("delete from Comment c where c.id = :id");
         query.setParameter("id", id);
         query.executeUpdate();
     }
 
-    @Override
+    
     public void deleteByBookId(long bookId) {
         Query query = em.createQuery("delete from Comment c where c.book.id = :bookId");
         query.setParameter("bookId", bookId);

@@ -42,7 +42,7 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test insert new book")
     void shouldInsertNewBook() {
-        bookRepository.insert(
+        bookRepository.save(
                 new Book(authorRepository.findById(5L).get(), genreRepository.findById(5L).get(),
                         "Best", new Date(), "russian",
                         "Test", "Test", "555-555"));
@@ -52,14 +52,14 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test get book by id")
     void shouldGetBookById() {
-        Book book = bookRepository.getById(5);
+        Book book = bookRepository.findById(5L).get();
         assertEquals(book.getBookName(), "Best");
     }
 
     @Test
     @DisplayName("Test get book by name")
     void shouldGetBookByName() {
-        List<Book> books = bookRepository.getByBookName("Best");
+        List<Book> books = bookRepository.findByBookName("Best");
         assertEquals(books.size(), 1);
 
         Book book = books.get(0);
@@ -69,14 +69,14 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test get books by part name")
     void shouldGetBooksByPartName() {
-        List<Book> books = bookRepository.getByBookPartName("est");
+        List<Book> books = bookRepository.findByBookNameContaining("est");
         assertEquals(books.size(), 2);
     }
 
     @Test
     @DisplayName("Test get all books")
     void shouldGetAllBooks() {
-        List<Book> books = bookRepository.getAll();
+        List<Book> books = bookRepository.findAll();
         Book book = books.get(0);
 
         assertEquals(book.getBookName(), "Best");
@@ -89,28 +89,14 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test delete book by id")
     void shouldDeleteBookById() {
-        bookRepository.deleteById(7);
+        bookRepository.deleteById(7L);
         assertEquals(bookRepository.count(), 1);
     }
 
     @Test
     @DisplayName("Test delete book")
     void shouldDeleteBook() {
-        bookRepository.delete(bookRepository.getById(7));
+        bookRepository.delete(bookRepository.findById(7L).get());
         assertEquals(bookRepository.count(), 1);
-    }
-
-    @Test
-    @DisplayName("Test add comment")
-    void shouldAddCommentToBook() {
-        Comment comment = new Comment("author", new Date(), "content");
-        Book book = bookRepository.getById(5);
-
-        comment.setBook(book);
-        bookRepository.insert(comment, book.getId());
-
-        List<Comment> comments = bookRepository.getByBookId(5);
-
-        assertEquals(comments.size(), 1);
     }
 }

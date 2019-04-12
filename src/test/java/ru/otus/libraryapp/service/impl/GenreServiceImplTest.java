@@ -42,7 +42,7 @@ class GenreServiceImplTest {
     }
 
     @Test
-    @DisplayName("Test invoke get all genre")
+    @DisplayName("Test invoke get all genres")
     void shouldGetAllGenres() {
         genreService.getAll();
         verify(genreRepository, times(1)).findAll();
