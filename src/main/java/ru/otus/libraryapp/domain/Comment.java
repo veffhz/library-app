@@ -13,6 +13,7 @@ import java.util.Date;
 @Entity
 @ToString(exclude = "book")
 @Table(name = "comments")
+@NamedEntityGraph(name = "commentGraph", includeAllAttributes = true)
 public class Comment {
 
     @Id
@@ -20,6 +21,7 @@ public class Comment {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "book_id")
     @Setter
     private Book book;
     @Column
