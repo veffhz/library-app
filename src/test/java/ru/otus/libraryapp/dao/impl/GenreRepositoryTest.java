@@ -14,10 +14,10 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test for GenreRepositoryJpa")
+@DisplayName("Test for GenreRepository")
 @DataJpaTest
 @ComponentScan
-class GenreRepositoryJdbcTest {
+class GenreRepositoryTest {
 
     @Autowired
     private GenreRepository genreRepository;
@@ -32,21 +32,21 @@ class GenreRepositoryJdbcTest {
     @Test
     @DisplayName("Test insert new genre")
     void shouldInsertNewGenre() {
-        genreRepository.insert(new Genre("test"));
+        genreRepository.save(new Genre("test"));
         assertEquals(genreRepository.count(), 4);
     }
 
     @Test
     @DisplayName("Test get genre by id")
     void shouldGetGenreById() {
-        Genre genre = genreRepository.getById(5);
+        Genre genre = genreRepository.findById(5L).get();
         assertEquals(genre.getGenreName(), "Genre");
     }
 
     @Test
     @DisplayName("Test get all genre")
     void shouldGetAllGenres() {
-        List<Genre> genres = genreRepository.getAll();
+        List<Genre> genres = genreRepository.findAll();
         Genre genre = genres.get(0);
 
         assertEquals(genre.getGenreName(), "Genre");
@@ -59,14 +59,14 @@ class GenreRepositoryJdbcTest {
     @Test
     @DisplayName("Test delete genre by id")
     void shouldDeleteGenreById() {
-        genreRepository.deleteById(9);
+        genreRepository.deleteById(9L);
         assertEquals(genreRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete genre")
     void shouldDeleteGenre() {
-        genreRepository.delete(genreRepository.getById(9));
+        genreRepository.delete(genreRepository.findById(9L).get());
         assertEquals(genreRepository.count(), 2);
     }
 }

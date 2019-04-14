@@ -13,6 +13,7 @@ import ru.otus.libraryapp.service.CommentService;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @Log
 @ShellComponent
@@ -28,8 +29,8 @@ public class CommentCommands {
 
     @ShellMethod("Show comment by id.")
     public String comment(@ShellOption long id) {
-        Comment comment = commentService.getById(id);
-        return comment.toString();
+        Optional<Comment> comment = commentService.getById(id);
+        return comment.isPresent() ? comment.get().toString() : "comment not found.";
     }
 
     @ShellMethod("Show comments by book id.")
@@ -48,14 +49,18 @@ public class CommentCommands {
 
     @ShellMethod(value = "Delete comment by id.", key = "delete-comment")
     public String delete(@ShellOption long id) {
-        commentService.deleteCommentById(id);
+        commentService.deleteById(id);
         return "Deleted comment " + id;
     }
 
     @ShellMethod(value = "Delete comments by book id.", key = "delete-by-bookId")
     public String deleteByBookId(@ShellOption long bookId) {
-        commentService.deleteByBookId(bookId);
-        return "Deleted comment by bookId " + bookId;
+        List<Comment> comments = commentService.deleteByBookId(bookId);
+        StringBuilder sb = new StringBuilder();
+        sb.append("Deleted comment by bookId: [ ");
+        comments.forEach(comment -> sb.append(comment.getId()).append(" "));
+        sb.append("]");
+        return sb.toString();
     }
 
 }

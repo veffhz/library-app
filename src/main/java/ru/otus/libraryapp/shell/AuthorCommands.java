@@ -12,6 +12,7 @@ import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Log
 @ShellComponent
@@ -27,8 +28,8 @@ public class AuthorCommands {
 
     @ShellMethod("Show author by id.")
     public String author(@ShellOption long id) {
-        Author author = authorService.getById(id);
-        return author.toString();
+        Optional<Author> author = authorService.getById(id);
+        return author.isPresent() ? author.get().toString() : "author not found.";
     }
 
     @ShellMethod(value = "Show authors by lastName.", key = "authors-lastName")
@@ -41,7 +42,7 @@ public class AuthorCommands {
         return Arrays.toString(authorService.getAll().toArray());
     }
 
-    @ShellMethod(value = "Delete author by id.", key = "delete")
+    @ShellMethod(value = "Delete author by id.", key = "delete-author")
     public String delete(@ShellOption long id) {
         authorService.deleteById(id);
         return String.format("Deleted author {%d}", id);

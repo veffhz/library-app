@@ -44,18 +44,4 @@ public class OtherCommands {
         return sb.toString();
     }
 
-    @ShellMethod(value = "Create test data.", key = "create-data")
-    public String test() {
-        StringBuilder sb = new StringBuilder();
-        long authorId = authorService.insert("Роберт", null, "Шекли");
-        sb.append("\ncreated authorId: ").append(authorId);
-        long genreId = genreService.insert("Фантастика");
-        sb.append("\ncreated genreId: ").append(genreId);
-        long bookId = bookService.insert(authorId, genreId, "Избранное", "1991-01-01",
-                "Русский", "Мир", "Москва", "5-03002745-9");
-        sb.append("\ncreated bookId: ").append(bookId);
-        sb.append("\n");
-        return sb.toString();
-    }
-
 }

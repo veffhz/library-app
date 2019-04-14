@@ -3,11 +3,13 @@ package ru.otus.libraryapp.service;
 import ru.otus.libraryapp.domain.Comment;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CommentService {
-    Comment getById(long id);
+    Optional<Comment> getById(long id);
     List<Comment> getByBookId(long bookId);
     long insert(String author, String date, String content, long bookId);
-    void deleteCommentById(long id);
-    void deleteByBookId(long bookId);
+    List<Comment> getAll();
+    void deleteById(long id);
+    List<Comment> deleteByBookId(long bookId);
 }

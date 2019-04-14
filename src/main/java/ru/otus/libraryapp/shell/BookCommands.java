@@ -12,6 +12,7 @@ import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.service.BookService;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Log
 @ShellComponent
@@ -27,8 +28,8 @@ public class BookCommands {
 
     @ShellMethod("Show book by id.")
     public String book(@ShellOption long id) {
-        Book book = bookService.getById(id);
-        return book.toString();
+        Optional<Book> book = bookService.getById(id);
+        return book.isPresent() ? book.get().toString() : "book not found.";
     }
 
     @ShellMethod(value = "Show books by bookName.", key = "books-name")

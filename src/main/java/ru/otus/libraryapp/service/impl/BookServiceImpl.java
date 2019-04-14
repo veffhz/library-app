@@ -14,6 +14,8 @@ import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
 
@@ -21,54 +23,55 @@ import static ru.otus.libraryapp.service.impl.Utils.toDate;
 @Service
 public class BookServiceImpl implements BookService {
 
-    private final BookRepository dao;
+    private final BookRepository repository;
 
     private final AuthorService authorService;
     private final GenreService genreService;
 
     @Autowired
-    public BookServiceImpl(BookRepository dao, AuthorService authorService, GenreService genreService) {
-        this.dao = dao;
+    public BookServiceImpl(BookRepository repository, AuthorService authorService, GenreService genreService) {
+        this.repository = repository;
         this.authorService = authorService;
         this.genreService = genreService;
     }
 
     @Override
     public long count() {
-        return dao.count();
+        return repository.count();
     }
 
-    public Book getById(long id) {
-        return dao.getById(id);
+    public Optional<Book> getById(long id) {
+        return repository.findById(id);
     }
 
     @Override
     public List<Book> getByBookName(String bookName) {
-        return dao.getByBookName(bookName);
+        return repository.findByBookName(bookName);
     }
 
     @Override
     public List<Book> getByBookPartName(String bookName) {
-        return dao.getByBookPartName(bookName);
+        return repository.findByBookNameContaining(bookName);
     }
 
     @Override
     public List<Book> getAll() {
-        return dao.getAll();
+        return repository.findAll();
     }
 
     @Override
     public void deleteById(long id) {
-        dao.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
-        Author author = authorService.getById(authorId);
-        Genre genre = genreService.getById(genreId);
-        Book book = new Book(author, genre, bookName, toDate(publishDate), language, publishingHouse, city, isbn);
-        return dao.insert(book);
+        Optional<Author> author = authorService.getById(authorId);
+        Optional<Genre> genre = genreService.getById(genreId);
+        Book book = new Book(author.orElse(new Author()), genre.orElse(new Genre()), bookName, toDate(publishDate), language, publishingHouse, city, isbn);
+        Book bookDb = repository.save(book);
+        return Objects.nonNull(bookDb) ? bookDb.getId() : 0L;
     }
 
 }

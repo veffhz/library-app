@@ -12,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Table(name = "books")
+@NamedEntityGraph(name = "bookGraph", includeAllAttributes = true)
 public class Book {
 
     @Id
@@ -19,8 +20,10 @@ public class Book {
     private long id;
 
     @ManyToOne
+    @JoinColumn(name = "author_id")
     private Author author;
     @ManyToOne
+    @JoinColumn(name = "genre_id")
     private Genre genre;
 
     @Column

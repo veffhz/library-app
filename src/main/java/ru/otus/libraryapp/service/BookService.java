@@ -3,10 +3,11 @@ package ru.otus.libraryapp.service;
 import ru.otus.libraryapp.domain.Book;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BookService {
     long count();
-    Book getById(long id);
+    Optional<Book> getById(long id);
     List<Book> getByBookName(String bookName);
     List<Book> getByBookPartName(String bookName);
     List<Book> getAll();

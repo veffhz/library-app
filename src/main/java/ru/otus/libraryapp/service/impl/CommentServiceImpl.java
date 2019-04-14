@@ -1,47 +1,66 @@
 package ru.otus.libraryapp.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import ru.otus.libraryapp.dao.BookRepository;
+import org.springframework.transaction.annotation.Transactional;
+import ru.otus.libraryapp.dao.CommentRepository;
+import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Comment;
+import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.CommentService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
 
 @Service
 public class CommentServiceImpl implements CommentService {
 
-    private final BookRepository bookRepository;
+    private final CommentRepository repository;
 
-    public CommentServiceImpl(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    private final BookService bookService;
+
+    @Autowired
+    public CommentServiceImpl(CommentRepository repository, BookService bookService) {
+        this.repository = repository;
+        this.bookService = bookService;
     }
 
     @Override
-    public Comment getById(long id) {
-        return bookRepository.getCommentById(id);
+    public Optional<Comment> getById(long id) {
+        return repository.findById(id);
     }
 
     @Override
     public List<Comment> getByBookId(long bookId) {
-        return bookRepository.getByBookId(bookId);
+        return repository.findByBookId(bookId);
     }
 
     @Override
     public long insert(String author, String date, String content, long bookId) {
         Comment comment = new Comment(author, toDate(date), content);
-        return bookRepository.insert(comment, bookId);
+        Book book = bookService.getById(bookId).get(); // TODO get
+        comment.setBook(book);
+        Comment commentDb = repository.save(comment);
+        return Objects.nonNull(commentDb) ? commentDb.getId() : 0L;
     }
 
     @Override
-    public void deleteCommentById(long id) {
-        bookRepository.deleteCommentById(id);
+    public List<Comment> getAll() {
+        return repository.findAll();
     }
 
     @Override
-    public void deleteByBookId(long bookId) {
-        bookRepository.deleteByBookId(bookId);
+    public void deleteById(long id) {
+        repository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public List<Comment> deleteByBookId(long bookId) {
+        return repository.deleteByBookId(bookId);
     }
 }

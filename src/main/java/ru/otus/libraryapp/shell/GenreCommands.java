@@ -11,6 +11,7 @@ import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 @Log
 @ShellComponent
@@ -26,8 +27,8 @@ public class GenreCommands {
 
     @ShellMethod("Show genre on id.")
     public String genre(@ShellOption long id) {
-        Genre genre = genreService.getById(id);
-        return genre.toString();
+        Optional<Genre> genre = genreService.getById(id);
+        return genre.isPresent() ? genre.get().toString() : "genre not found.";
     }
 
     @ShellMethod(value = "Show genres by genreName.", key = "genre-name")

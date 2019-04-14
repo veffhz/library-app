@@ -16,6 +16,7 @@ import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.BookService;
 
 import java.util.Date;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -40,11 +41,11 @@ class BookServiceImplTest {
                 new Genre(""), "Book",
                 new Date(), "russian",
                 "Test", "Test", "555-555");
-        when(bookRepository.getById(any(Long.class))).thenReturn(bookMock);
+        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(bookMock));
 
-        Book book = bookService.getById(1);
+        Book book = bookService.getById(1).get();
 
-        verify(bookRepository, times(1)).getById(1);
+        verify(bookRepository, times(1)).findById(1L);
         assertEquals(bookMock, book);
     }
 
@@ -52,14 +53,14 @@ class BookServiceImplTest {
     @DisplayName("Test invoke get all books")
     void shouldGetAllBooks() {
         bookService.getAll();
-        verify(bookRepository, times(1)).getAll();
+        verify(bookRepository, times(1)).findAll();
     }
 
     @Test
     @DisplayName("Test invoke delete book by id")
     void shouldDeleteBookById() {
         bookService.deleteById(1);
-        verify(bookRepository, times(1)).deleteById(1);
+        verify(bookRepository, times(1)).deleteById(1L);
     }
 
     @Test
@@ -68,6 +69,6 @@ class BookServiceImplTest {
         bookService.insert(5, 5, "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
-        verify(bookRepository, times(1)).insert(ArgumentMatchers.any());
+        verify(bookRepository, times(1)).save(ArgumentMatchers.any());
     }
 }

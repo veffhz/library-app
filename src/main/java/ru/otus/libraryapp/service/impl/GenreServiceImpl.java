@@ -8,46 +8,49 @@ import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class GenreServiceImpl implements GenreService {
 
-    private final GenreRepository dao;
+    private final GenreRepository repository;
 
     @Autowired
-    public GenreServiceImpl(GenreRepository dao) {
-        this.dao = dao;
+    public GenreServiceImpl(GenreRepository repository) {
+        this.repository = repository;
     }
 
     @Override
     public long count() {
-        return dao.count();
+        return repository.count();
     }
 
     @Override
-    public Genre getById(long id) {
-        return dao.getById(id);
+    public Optional<Genre> getById(long id) {
+        return repository.findById(id);
     }
 
     @Override
     public List<Genre> getByGenreName(String genreName) {
-        return dao.getByGenreName(genreName);
+        return repository.findByGenreName(genreName);
     }
 
     @Override
     public List<Genre> getAll() {
-        return dao.getAll();
+        return repository.findAll();
     }
 
     @Override
     public void deleteById(long id) {
-        dao.deleteById(id);
+        repository.deleteById(id);
     }
 
     @Override
     public long insert(String genreName) {
         Genre genre = new Genre(genreName);
-        return dao.insert(genre);
+        Genre genreDb = repository.save(genre);
+        return Objects.nonNull(genreDb) ? genreDb.getId() : 0L;
     }
 
 }
