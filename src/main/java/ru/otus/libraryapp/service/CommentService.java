@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface CommentService {
-    Optional<Comment> getById(long id);
-    List<Comment> getByBookId(long bookId);
-    long insert(String author, String date, String content, long bookId);
+    Optional<Comment> getById(String id);
+    List<Comment> getByBookId(String bookId);
+    String insert(String author, String date, String content, String bookId);
     List<Comment> getAll();
-    void deleteById(long id);
-    List<Comment> deleteByBookId(long bookId);
+    void deleteById(String id);
+    List<Comment> deleteByBookId(String bookId);
 }

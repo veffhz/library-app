@@ -14,7 +14,6 @@ import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
@@ -40,7 +39,7 @@ public class BookServiceImpl implements BookService {
         return repository.count();
     }
 
-    public Optional<Book> getById(long id) {
+    public Optional<Book> getById(String id) {
         return repository.findById(id);
     }
 
@@ -60,18 +59,18 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
+    public String insert(String authorId, String genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
         Optional<Author> author = authorService.getById(authorId);
         Optional<Genre> genre = genreService.getById(genreId);
         Book book = new Book(author.orElse(new Author()), genre.orElse(new Genre()), bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         Book bookDb = repository.save(book);
-        return Objects.nonNull(bookDb) ? bookDb.getId() : 0L;
+        return bookDb.getId();
     }
 
 }

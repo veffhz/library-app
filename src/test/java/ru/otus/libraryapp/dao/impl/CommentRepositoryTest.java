@@ -32,12 +32,12 @@ class CommentRepositoryTest {
     @DisplayName("Test add comment")
     void shouldAddCommentToBook() {
         Comment comment = new Comment("author", new Date(), "content");
-        Book book = bookRepository.findById(5L).get();
+        Book book = bookRepository.findAll().get(0);
 
         comment.setBook(book);
         commentRepository.save(comment);
 
-        List<Comment> comments = commentRepository.findByBookId(5);
+        List<Comment> comments = commentRepository.findAll();
 
         assertEquals(comments.size(), 1);
     }

@@ -4,39 +4,31 @@ import lombok.Getter;
 import lombok.ToString;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
 @Getter
-@Entity
 @NoArgsConstructor
 @ToString
-@Table(name = "books")
-@NamedEntityGraph(name = "bookGraph", includeAllAttributes = true)
+@Document(collection = "books")
 public class Book {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @ManyToOne
-    @JoinColumn(name = "author_id")
+    private String id;
+    @DBRef
     private Author author;
-    @ManyToOne
-    @JoinColumn(name = "genre_id")
+    @DBRef
     private Genre genre;
-
-    @Column
+    @Indexed
     private String bookName;
-    @Column
     private Date publishDate;
-    @Column
     private String language;
-    @Column
     private String publishingHouse;
-    @Column
     private String city;
-    @Column
     private String isbn;
 
     public Book(Author author, Genre genre, String bookName,

@@ -41,11 +41,11 @@ class BookServiceImplTest {
                 new Genre(""), "Book",
                 new Date(), "russian",
                 "Test", "Test", "555-555");
-        when(bookRepository.findById(any(Long.class))).thenReturn(Optional.of(bookMock));
+        when(bookRepository.findById(any(String.class))).thenReturn(Optional.of(bookMock));
 
-        Book book = bookService.getById(1).get();
+        Book book = bookService.getById("000").get();
 
-        verify(bookRepository, times(1)).findById(1L);
+        verify(bookRepository, times(1)).findById("000");
         assertEquals(bookMock, book);
     }
 
@@ -59,14 +59,14 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Test invoke delete book by id")
     void shouldDeleteBookById() {
-        bookService.deleteById(1);
-        verify(bookRepository, times(1)).deleteById(1L);
+        bookService.deleteById("000");
+        verify(bookRepository, times(1)).deleteById("000");
     }
 
     @Test
     @DisplayName("Test invoke insert new book")
     void shouldInsertNewBook() {
-        bookService.insert(5, 5, "Book",
+        bookService.insert("000", "000", "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
         verify(bookRepository, times(1)).save(ArgumentMatchers.any());

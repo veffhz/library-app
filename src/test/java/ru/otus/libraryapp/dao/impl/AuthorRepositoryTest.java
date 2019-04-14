@@ -39,7 +39,7 @@ class AuthorRepositoryTest {
     @Test
     @DisplayName("Test get author by id")
     void shouldGetAuthorById() {
-        Author author = authorRepository.findById(5L).get();
+        Author author = authorRepository.findAll().get(0);
         assertEquals(author.getFirstName(), "FirstName");
         assertEquals(author.getLastName(), "LastName");
     }
@@ -75,14 +75,16 @@ class AuthorRepositoryTest {
     @Test
     @DisplayName("Test delete author by id")
     void shouldDeleteAuthorById() {
-        authorRepository.deleteById(9L);
+        Author author = authorRepository.findAll().get(0);
+        authorRepository.deleteById(author.getId());
         assertEquals(authorRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete author")
     void shouldDeleteAuthor() {
-        authorRepository.delete(authorRepository.findById(9L).get());
+        Author author = authorRepository.findAll().get(0);
+        authorRepository.delete(author);
         assertEquals(authorRepository.count(), 2);
     }
 }

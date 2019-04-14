@@ -43,7 +43,7 @@ class BookRepositoryTest {
     @DisplayName("Test insert new book")
     void shouldInsertNewBook() {
         bookRepository.save(
-                new Book(authorRepository.findById(5L).get(), genreRepository.findById(5L).get(),
+                new Book(authorRepository.findAll().get(0), genreRepository.findAll().get(0),
                         "Best", new Date(), "russian",
                         "Test", "Test", "555-555"));
         assertEquals(bookRepository.count(), 3);
@@ -52,7 +52,7 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test get book by id")
     void shouldGetBookById() {
-        Book book = bookRepository.findById(5L).get();
+        Book book = bookRepository.findAll().get(0);
         assertEquals(book.getBookName(), "Best");
     }
 
@@ -89,14 +89,16 @@ class BookRepositoryTest {
     @Test
     @DisplayName("Test delete book by id")
     void shouldDeleteBookById() {
-        bookRepository.deleteById(7L);
+        Book book = bookRepository.findAll().get(0);
+        bookRepository.deleteById(book.getId());
         assertEquals(bookRepository.count(), 1);
     }
 
     @Test
     @DisplayName("Test delete book")
     void shouldDeleteBook() {
-        bookRepository.delete(bookRepository.findById(7L).get());
+        Book book = bookRepository.findAll().get(0);
+        bookRepository.delete(book);
         assertEquals(bookRepository.count(), 1);
     }
 }

@@ -39,7 +39,7 @@ class GenreRepositoryTest {
     @Test
     @DisplayName("Test get genre by id")
     void shouldGetGenreById() {
-        Genre genre = genreRepository.findById(5L).get();
+        Genre genre = genreRepository.findAll().get(0);
         assertEquals(genre.getGenreName(), "Genre");
     }
 
@@ -59,14 +59,16 @@ class GenreRepositoryTest {
     @Test
     @DisplayName("Test delete genre by id")
     void shouldDeleteGenreById() {
-        genreRepository.deleteById(9L);
+        Genre genre = genreRepository.findAll().get(0);
+        genreRepository.deleteById(genre.getId());
         assertEquals(genreRepository.count(), 2);
     }
 
     @Test
     @DisplayName("Test delete genre")
     void shouldDeleteGenre() {
-        genreRepository.delete(genreRepository.findById(9L).get());
+        Genre genre = genreRepository.findAll().get(0);
+        genreRepository.delete(genre);
         assertEquals(genreRepository.count(), 2);
     }
 }

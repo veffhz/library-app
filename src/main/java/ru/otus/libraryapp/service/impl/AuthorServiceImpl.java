@@ -1,6 +1,7 @@
 package ru.otus.libraryapp.service.impl;
 
 import org.apache.logging.log4j.util.Strings;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,6 @@ import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,7 +28,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Optional<Author> getById(long id) {
+    public Optional<Author> getById(String id) {
         return repository.findById(id);
     }
 
@@ -43,15 +43,15 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public long insert(String firstName, String middleName, String lastName) {
+    public String insert(String firstName, String middleName, String lastName) {
         Author author = new Author(firstName, Strings.isBlank(middleName) ? null : middleName, lastName);
         Author authorDb = repository.save(author);
-        return Objects.nonNull(authorDb) ? authorDb.getId() : 0L;
+        return authorDb.getId();
     }
 
 }

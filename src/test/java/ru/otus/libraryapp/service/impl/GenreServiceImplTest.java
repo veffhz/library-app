@@ -33,11 +33,11 @@ class GenreServiceImplTest {
     @DisplayName("Test invoke get genre by id")
     void shouldGetGenreById() {
         Genre genreMock = new Genre("test");
-        when(genreRepository.findById(any(Long.class))).thenReturn(Optional.of(genreMock));
+        when(genreRepository.findById(any(String.class))).thenReturn(Optional.of(genreMock));
 
-        Genre genre = genreService.getById(1L).get();
+        Genre genre = genreService.getById("000").get();
 
-        verify(genreRepository, times(1)).findById(1L);
+        verify(genreRepository, times(1)).findById("000");
         assertEquals(genreMock, genre);
     }
 
@@ -51,8 +51,8 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("Test invoke delete genre by id")
     void shouldDeleteGenreById() {
-        genreService.deleteById(1);
-        verify(genreRepository, times(1)).deleteById(1L);
+        genreService.deleteById("000");
+        verify(genreRepository, times(1)).deleteById("000");
     }
 
     @Test

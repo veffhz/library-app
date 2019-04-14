@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface GenreService {
     long count();
-    Optional<Genre> getById(long id);
+    Optional<Genre> getById(String id);
     List<Genre> getByGenreName(String genreName);
     List<Genre> getAll();
-    void deleteById(long id);
-    long insert(String genreName);
+    void deleteById(String id);
+    String insert(String genreName);
 }

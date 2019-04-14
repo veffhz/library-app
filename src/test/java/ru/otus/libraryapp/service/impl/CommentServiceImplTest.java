@@ -32,11 +32,11 @@ class CommentServiceImplTest {
     @DisplayName("Test invoke get comment by id")
     void shouldGetGenreById() {
         Comment commentMock = new Comment("test", new Date(), "test");
-        when(commentRepository.findById(any(Long.class))).thenReturn(Optional.of(commentMock));
+        when(commentRepository.findById(any(String.class))).thenReturn(Optional.of(commentMock));
 
-        Comment comment = commentService.getById(1L).get();
+        Comment comment = commentService.getById("000").get();
 
-        verify(commentRepository, times(1)).findById(1L);
+        verify(commentRepository, times(1)).findById("000");
         assertEquals(commentMock, comment);
     }
 
@@ -50,14 +50,14 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("Test invoke delete comment by id")
     void shouldDeleteGenreById() {
-        commentService.deleteById(1);
-        verify(commentRepository, times(1)).deleteById(1L);
+        commentService.deleteById("000");
+        verify(commentRepository, times(1)).deleteById("000");
     }
 
     @Test
     @DisplayName("Test invoke insert new comment")
     void shouldInsertNewGenre() {
-        commentService.insert("test", "1991-01-01", "test", 5);
+        commentService.insert("test", "1991-01-01", "test", "000");
         verify(commentRepository, times(1)).save(any());
     }
 }

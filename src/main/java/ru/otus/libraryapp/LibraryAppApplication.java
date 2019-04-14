@@ -1,18 +1,15 @@
 package ru.otus.libraryapp;
 
-import org.h2.tools.Console;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 
-import java.sql.SQLException;
-
+@EnableMongoRepositories
 @SpringBootApplication
 public class LibraryAppApplication {
 
-	public static void main(String[] args) throws SQLException {
+	public static void main(String[] args) {
 		SpringApplication.run(LibraryAppApplication.class, args);
-
-		Console.main(args);
 	}
 
 }

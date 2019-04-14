@@ -33,11 +33,11 @@ class AuthorServiceImplTest {
     @DisplayName("Test invoke get author by id")
     void shouldGetAuthorById() {
         Author authorMock = new Author("test", "test", "test");
-        when(authorRepository.findById(any(Long.class))).thenReturn(Optional.of(authorMock));
+        when(authorRepository.findById(any(String.class))).thenReturn(Optional.of(authorMock));
 
-        Author author = authorService.getById(1L).get();
+        Author author = authorService.getById("000").get();
 
-        verify(authorRepository, times(1)).findById(1L);
+        verify(authorRepository, times(1)).findById("000");
         assertEquals(authorMock, author);
     }
 
@@ -51,8 +51,8 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("Test invoke delete author by id")
     void shouldDeleteAuthorById() {
-        authorService.deleteById(1);
-        verify(authorRepository, times(1)).deleteById(1L);
+        authorService.deleteById("000");
+        verify(authorRepository, times(1)).deleteById("000");
     }
 
     @Test
