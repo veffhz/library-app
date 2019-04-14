@@ -5,82 +5,89 @@ import com.github.mongobee.changeset.ChangeSet;
 
 import com.mongodb.*;
 
+import org.springframework.data.util.Pair;
 import ru.otus.libraryapp.service.impl.Utils;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @ChangeLog
 public class DatabaseChangelog {
 
     @ChangeSet(order = "001", id = "addAuthors", author = "veffhz")
     public void insertAuthors(DB db) {
-        DBCollection authorsCollection = db.getCollection("authors");
-
-        BasicDBObject author1 = new BasicDBObject();
-        author1.append("firstName", "Роберт");
-        author1.append("lastName", "Шекли");
-        authorsCollection.insert(author1);
-
-        BasicDBObject author2 = new BasicDBObject();
-        author2.append("firstName", "Агата");
-        author2.append("lastName", "Кристи");
-        authorsCollection.insert(author2);
+        createDbObject(db, "authors", Arrays.asList(Pair.of("firstName", "Роберт"),
+                Pair.of("lastName", "Шекли")));
+        createDbObject(db, "authors", Arrays.asList(Pair.of("firstName", "Агата"),
+                Pair.of("lastName", "Кристи")));
     }
 
     @ChangeSet(order = "002", id = "addGenres", author = "veffhz")
     public void insertGenres(DB db) {
-        DBCollection genresCollection = db.getCollection("genres");
-
-        BasicDBObject genre1 = new BasicDBObject();
-        genre1.append("genreName", "Фантастика");
-        genresCollection.insert(genre1);
-
-        BasicDBObject genre2 = new BasicDBObject();
-        genre2.append("genreName", "Детектив");
-        genresCollection.insert(genre2);
+        createDbObject(db, "genres", Collections.singletonList(Pair.of("genreName", "Фантастика")));
+        createDbObject(db, "genres", Collections.singletonList(Pair.of("genreName", "Детектив")));
     }
 
     @ChangeSet(order = "003", id = "addBooks", author = "veffhz")
     public void insertBooks(DB db) {
-        DBCollection booksCollection = db.getCollection("books");
-        BasicDBObject book1 = new BasicDBObject();
-        book1.append("bookName", "Избранное");
-        book1.append("publishDate", Utils.toDate("1991-01-01"));
-        book1.append("language", "Русский");
-        book1.append("publishingHouse", "Мир");
-        book1.append("city", "Москва");
-        book1.append("isbn", "5-03002745-9");
-
         DBCollection authorsCollection = db.getCollection("authors");
-        System.out.println("authorsCollection " + authorsCollection);
+
         DBObject author1 = authorsCollection.findOne(new BasicDBObject("lastName", "Шекли"));
-        System.out.println("author _id " + author1.get("_id"));
         DBRef refAuthor1 = new DBRef("authors", author1.get("_id"));
-        book1.append("author", refAuthor1);
 
         DBCollection genresCollection = db.getCollection("genres");
         DBObject genre1 = genresCollection.findOne(new BasicDBObject("genreName", "Фантастика"));
         DBRef refGenre1 = new DBRef("genres", genre1.get("_id"));
-        book1.append("genre", refGenre1);
 
-        booksCollection.insert(book1);
-
-        // ------------------------------------------------------------------------------------------
-
-        BasicDBObject book2 = new BasicDBObject();
-        book2.append("bookName", "Десять негритят");
-        book2.append("publishDate", Utils.toDate("2017-01-01"));
-        book2.append("language", "Русский");
-        book2.append("publishingHouse", "Эксмо-Пресс");
-        book2.append("city", "Москва");
-        book2.append("isbn", "978-5-699-83193-7");
+        createDbObject(db, "books", Arrays.asList(Pair.of("bookName", "Избранное"),
+                Pair.of("publishDate", Utils.toDate("1991-01-01")), Pair.of("language", "Русский"),
+                Pair.of("publishingHouse", "Мир"), Pair.of("city", "Москва"), Pair.of("isbn", "5-03002745-9"),
+                Pair.of("author", refAuthor1), Pair.of("genre", refGenre1)));
 
         DBObject author2 = authorsCollection.findOne(new BasicDBObject("lastName", "Кристи"));
         DBRef refAuthor2 = new DBRef("authors", author2.get("_id"));
-        book1.append("author", refAuthor2);
 
         DBObject genre2 = genresCollection.findOne(new BasicDBObject("genreName", "Детектив"));
         DBRef refGenre2 = new DBRef("genres", genre2.get("_id"));
-        book1.append("genre", refGenre2);
 
-        booksCollection.insert(book2);
+        createDbObject(db, "books", Arrays.asList(Pair.of("bookName", "Десять негритят"),
+                Pair.of("publishDate", Utils.toDate("2017-01-01")), Pair.of("language", "Русский"),
+                Pair.of("publishingHouse", "Эксмо-Пресс"), Pair.of("city", "Москва"), Pair.of("isbn", "978-5-699-83193-7"),
+                Pair.of("author", refAuthor2), Pair.of("genre", refGenre2)));
+    }
+
+    @ChangeSet(order = "004", id = "addComments", author = "veffhz")
+    public void insertComments(DB db) {
+        DBCollection booksCollection = db.getCollection("books");
+
+        DBObject book1 = booksCollection.findOne(new BasicDBObject("bookName", "Избранное"));
+        DBRef refBook1 = new DBRef("books", book1.get("_id"));
+
+        createDbObject(db, "comments", Arrays.asList(Pair.of("author", "Me"),
+                Pair.of("date", Utils.toDate("2018-01-01")), Pair.of("content", "Очень"),
+                Pair.of("book", refBook1)));
+
+        createDbObject(db, "comments", Arrays.asList(Pair.of("author", "Anonymous"),
+                Pair.of("date", Utils.toDate("2019-01-01")), Pair.of("content", "Cool!"),
+                Pair.of("book", refBook1)));
+
+        DBObject book2 = booksCollection.findOne(new BasicDBObject("bookName", "Десять негритят"));
+        DBRef refBook2 = new DBRef("books", book2.get("_id"));
+
+        createDbObject(db, "comments", Arrays.asList(Pair.of("author", "Me"),
+                Pair.of("date", Utils.toDate("2018-01-01")), Pair.of("content", "Хорошо"),
+                Pair.of("book", refBook2)));
+
+        createDbObject(db, "comments", Arrays.asList(Pair.of("author", "Anonymous"),
+                Pair.of("date", Utils.toDate("2019-01-01")), Pair.of("content", "Nice!"),
+                Pair.of("book", refBook2)));
+    }
+
+    private void createDbObject(DB db, String collectionName, List<Pair<String, Object>> fields) {
+        DBCollection collection = db.getCollection(collectionName);
+        BasicDBObject dbObject = new BasicDBObject();
+        fields.forEach(field -> dbObject.append(field.getFirst(), field.getSecond()));
+        collection.insert(dbObject);
     }
 }
