@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @NoArgsConstructor
 @ToString
 @Document(collection = "authors")
+@EqualsAndHashCode
 public class Author {
 
     @Id

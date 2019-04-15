@@ -1,5 +1,6 @@
 package ru.otus.libraryapp.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import lombok.NoArgsConstructor;
@@ -15,6 +16,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString
 @Document(collection = "books")
+@EqualsAndHashCode
 public class Book {
 
     @Id
@@ -43,6 +45,5 @@ public class Book {
         this.city = city;
         this.isbn = isbn;
     }
-
 
 }

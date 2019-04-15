@@ -8,6 +8,7 @@ import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -49,7 +50,7 @@ public class GenreServiceImpl implements GenreService {
     public String insert(String genreName) {
         Genre genre = new Genre(genreName);
         Genre genreDb = repository.save(genre);
-        return genreDb.getId();
+        return Objects.nonNull(genreDb) ? genreDb.getId() : null;
     }
 
 }

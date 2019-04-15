@@ -10,6 +10,7 @@ import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -51,7 +52,7 @@ public class AuthorServiceImpl implements AuthorService {
     public String insert(String firstName, String middleName, String lastName) {
         Author author = new Author(firstName, Strings.isBlank(middleName) ? null : middleName, lastName);
         Author authorDb = repository.save(author);
-        return authorDb.getId();
+        return Objects.nonNull(authorDb) ? authorDb.getId() : null;
     }
 
 }

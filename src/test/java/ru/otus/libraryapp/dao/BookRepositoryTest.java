@@ -1,17 +1,13 @@
-package ru.otus.libraryapp.dao.impl;
+package ru.otus.libraryapp.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 
-import ru.otus.libraryapp.dao.AuthorRepository;
-import ru.otus.libraryapp.dao.BookRepository;
-import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Book;
-import ru.otus.libraryapp.domain.Comment;
 
 import java.util.Date;
 import java.util.List;
@@ -19,8 +15,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test for BookRepository")
-@DataJpaTest
-@ComponentScan
+@DataMongoTest
+@ComponentScan({"ru.otus.libraryapp.dao", "ru.otus.libraryapp.testconfig"})
 class BookRepositoryTest {
 
     @Autowired
@@ -53,7 +49,7 @@ class BookRepositoryTest {
     @DisplayName("Test get book by id")
     void shouldGetBookById() {
         Book book = bookRepository.findAll().get(0);
-        assertEquals(book.getBookName(), "Best");
+        assertEquals(book.getBookName(), "Best7");
     }
 
     @Test
@@ -70,7 +66,7 @@ class BookRepositoryTest {
     @DisplayName("Test get books by part name")
     void shouldGetBooksByPartName() {
         List<Book> books = bookRepository.findByBookNameContaining("est");
-        assertEquals(books.size(), 2);
+        assertEquals(books.size(), 3);
     }
 
     @Test
@@ -79,11 +75,11 @@ class BookRepositoryTest {
         List<Book> books = bookRepository.findAll();
         Book book = books.get(0);
 
-        assertEquals(book.getBookName(), "Best");
+        assertEquals(book.getBookName(), "Best7");
 
         book = books.get(1);
 
-        assertEquals(book.getBookName(), "Best7");
+        assertEquals(book.getBookName(), "Best9");
     }
 
     @Test
@@ -91,7 +87,7 @@ class BookRepositoryTest {
     void shouldDeleteBookById() {
         Book book = bookRepository.findAll().get(0);
         bookRepository.deleteById(book.getId());
-        assertEquals(bookRepository.count(), 1);
+        assertEquals(bookRepository.count(), 2);
     }
 
     @Test
@@ -99,6 +95,6 @@ class BookRepositoryTest {
     void shouldDeleteBook() {
         Book book = bookRepository.findAll().get(0);
         bookRepository.delete(book);
-        assertEquals(bookRepository.count(), 1);
+        assertEquals(bookRepository.count(), 2);
     }
 }

@@ -3,15 +3,14 @@ package ru.otus.libraryapp.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.mockito.ArgumentMatchers;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
-import ru.otus.libraryapp.service.AuthorService;
 
 import java.util.Optional;
 
@@ -20,11 +19,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test for Author Service")
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class AuthorServiceImplTest {
 
-    @Autowired
-    private AuthorService authorService;
+    @SpyBean
+    private AuthorServiceImpl authorService;
 
     @MockBean
     private AuthorRepository authorRepository;
@@ -58,8 +57,9 @@ class AuthorServiceImplTest {
     @Test
     @DisplayName("Test invoke insert new author")
     void shouldInsertNewAuthor() {
-        when(authorRepository.save(any(Author.class))).thenReturn(ArgumentMatchers.any());
+        Author author = new Author("test", "test", "test");
+        when(authorRepository.save(author)).thenReturn(author);
         authorService.insert("test", "test", "test");
-        verify(authorRepository, times(1)).save(ArgumentMatchers.any());
+        verify(authorRepository, times(1)).save(author);
     }
 }

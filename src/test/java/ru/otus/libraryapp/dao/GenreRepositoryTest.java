@@ -1,13 +1,12 @@
-package ru.otus.libraryapp.dao.impl;
+package ru.otus.libraryapp.dao;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.context.annotation.ComponentScan;
 
-import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
 
 import java.util.List;
@@ -15,8 +14,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("Test for GenreRepository")
-@DataJpaTest
-@ComponentScan
+@DataMongoTest
+@ComponentScan({"ru.otus.libraryapp.dao", "ru.otus.libraryapp.testconfig"})
 class GenreRepositoryTest {
 
     @Autowired
@@ -26,14 +25,14 @@ class GenreRepositoryTest {
     @DisplayName("Test return count genres")
     void shouldReturnCorrectCount() {
         long count = genreRepository.count();
-        assertEquals(count, 3);
+        assertEquals(count, 2);
     }
 
     @Test
     @DisplayName("Test insert new genre")
     void shouldInsertNewGenre() {
         genreRepository.save(new Genre("test"));
-        assertEquals(genreRepository.count(), 4);
+        assertEquals(genreRepository.count(), 3);
     }
 
     @Test
@@ -49,11 +48,11 @@ class GenreRepositoryTest {
         List<Genre> genres = genreRepository.findAll();
         Genre genre = genres.get(0);
 
-        assertEquals(genre.getGenreName(), "Genre");
+        assertEquals(genre.getGenreName(), "Genre7");
 
         genre = genres.get(1);
 
-        assertEquals(genre.getGenreName(), "Genre7");
+        assertEquals(genre.getGenreName(), "Genre9");
     }
 
     @Test
@@ -69,6 +68,6 @@ class GenreRepositoryTest {
     void shouldDeleteGenre() {
         Genre genre = genreRepository.findAll().get(0);
         genreRepository.delete(genre);
-        assertEquals(genreRepository.count(), 2);
+        assertEquals(genreRepository.count(), 3);
     }
 }

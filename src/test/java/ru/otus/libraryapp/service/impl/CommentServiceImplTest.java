@@ -3,13 +3,15 @@ package ru.otus.libraryapp.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ru.otus.libraryapp.dao.CommentRepository;
+import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Comment;
-import ru.otus.libraryapp.service.CommentService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -19,11 +21,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @DisplayName("Test for Comment Service")
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class CommentServiceImplTest {
 
-    @Autowired
-    private CommentService commentService;
+    @SpyBean
+    private CommentServiceImpl commentService;
+
+    @MockBean
+    private BookServiceImpl bookService;
 
     @MockBean
     private CommentRepository commentRepository;
@@ -57,6 +62,7 @@ class CommentServiceImplTest {
     @Test
     @DisplayName("Test invoke insert new comment")
     void shouldInsertNewGenre() {
+        when(bookService.getById("000")).thenReturn(Optional.of(new Book()));
         commentService.insert("test", "1991-01-01", "test", "000");
         verify(commentRepository, times(1)).save(any());
     }

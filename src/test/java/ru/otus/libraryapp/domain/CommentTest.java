@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.Date;
@@ -13,19 +13,29 @@ import java.util.Date;
 import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
-@DataJpaTest
+@DataMongoTest
 class CommentTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private MongoTemplate mongoTemplate;
 
     @Test
     public void saveAndGet() {
+        Author author = new Author("FirstName", "MiddleName", "LastName");
+        mongoTemplate.insert(author, "authors");
+
+        Genre genre = new Genre("Genre");
+        mongoTemplate.insert(genre, "genres");
+
+        Book book = new Book(author, genre, "Best", new Date(), "russian",
+                "Test", "Test", "555-555");
+        mongoTemplate.insert(book);
+
         Comment comment = new Comment( "Best", new Date(), "russian");
-        Book bookFromDb = entityManager.find(Book.class, 5L);
-        comment.setBook(bookFromDb);
-        Long id = entityManager.persistAndGetId(comment, Long.class);
-        Comment commentFromDb = entityManager.find(Comment.class, id);
+        comment.setBook(book);
+        mongoTemplate.insert(comment);
+
+        Comment commentFromDb = mongoTemplate.findById(comment.getId(), Comment.class,"comments");
         assertEquals(comment, commentFromDb);
     }
 

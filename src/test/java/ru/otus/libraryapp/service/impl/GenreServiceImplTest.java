@@ -3,13 +3,14 @@ package ru.otus.libraryapp.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
-import ru.otus.libraryapp.service.GenreService;
 
 import java.util.Optional;
 
@@ -20,11 +21,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Test for Genre Service")
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class GenreServiceImplTest {
 
-    @Autowired
-    private GenreService genreService;
+    @SpyBean
+    private GenreServiceImpl genreService;
 
     @MockBean
     private GenreRepository genreRepository;

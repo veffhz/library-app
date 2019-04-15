@@ -14,6 +14,7 @@ import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
@@ -70,7 +71,7 @@ public class BookServiceImpl implements BookService {
         Optional<Genre> genre = genreService.getById(genreId);
         Book book = new Book(author.orElse(new Author()), genre.orElse(new Genre()), bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         Book bookDb = repository.save(book);
-        return bookDb.getId();
+        return Objects.nonNull(bookDb) ? bookDb.getId() : null;
     }
 
 }

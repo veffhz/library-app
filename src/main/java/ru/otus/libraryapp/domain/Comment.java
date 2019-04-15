@@ -1,9 +1,6 @@
 package ru.otus.libraryapp.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
@@ -15,6 +12,7 @@ import java.util.Date;
 @NoArgsConstructor
 @ToString(exclude = "book")
 @Document(collection = "comments")
+@EqualsAndHashCode
 public class Comment {
 
     @Id

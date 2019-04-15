@@ -11,6 +11,7 @@ import ru.otus.libraryapp.service.BookService;
 import ru.otus.libraryapp.service.CommentService;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static ru.otus.libraryapp.service.impl.Utils.toDate;
@@ -44,7 +45,7 @@ public class CommentServiceImpl implements CommentService {
         Book book = bookService.getById(bookId).get(); // TODO get
         comment.setBook(book);
         Comment commentDb = repository.save(comment);
-        return commentDb.getId();
+        return Objects.nonNull(commentDb) ? commentDb.getId() : null;
     }
 
     @Override

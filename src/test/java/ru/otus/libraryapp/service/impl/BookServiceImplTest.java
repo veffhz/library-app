@@ -2,18 +2,18 @@ package ru.otus.libraryapp.service.impl;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.mockito.ArgumentMatchers;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ru.otus.libraryapp.dao.BookRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Genre;
-import ru.otus.libraryapp.service.BookService;
 
 import java.util.Date;
 import java.util.Optional;
@@ -25,11 +25,17 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Test for Book Service")
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class BookServiceImplTest {
 
-    @Autowired
-    private BookService bookService;
+    @SpyBean
+    private BookServiceImpl bookService;
+
+    @MockBean
+    private AuthorServiceImpl authorService;
+
+    @MockBean
+    private GenreServiceImpl genreService;
 
     @MockBean
     private BookRepository bookRepository;
@@ -66,6 +72,9 @@ class BookServiceImplTest {
     @Test
     @DisplayName("Test invoke insert new book")
     void shouldInsertNewBook() {
+        when(authorService.getById("000")).thenReturn(Optional.of(new Author()));
+        when(genreService.getById("000")).thenReturn(Optional.of(new Genre()));
+
         bookService.insert("000", "000", "Book",
                 "1901-01-01", "russian",
                 "Test", "Test", "555-555");
