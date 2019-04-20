@@ -28,13 +28,13 @@ public class CommentCommands {
     }
 
     @ShellMethod("Show comment by id.")
-    public String comment(@ShellOption long id) {
+    public String comment(@ShellOption String id) {
         Optional<Comment> comment = commentService.getById(id);
         return comment.isPresent() ? comment.get().toString() : "comment not found.";
     }
 
     @ShellMethod("Show comments by book id.")
-    public String comments(@ShellOption long bookId) {
+    public String comments(@ShellOption String bookId) {
         List<Comment> comments = commentService.getByBookId(bookId);
         return Arrays.toString(comments.toArray());
     }
@@ -42,19 +42,19 @@ public class CommentCommands {
     @ShellMethod(value = "Add comment \"author\", \"date\", \"content\", \"bookId\".", key = "add-comment")
     public String add(@ShellOption String author,
                       @ShellOption(defaultValue="") String date,//TODO empty param
-                      @ShellOption String content, @ShellOption long bookId) {
-        long id = commentService.insert(author, date, content, bookId);
-        return String.format("Comment {%d} created", id);
+                      @ShellOption String content, @ShellOption String bookId) {
+        String id = commentService.insert(author, date, content, bookId);
+        return String.format("Comment {%s} created", id);
     }
 
     @ShellMethod(value = "Delete comment by id.", key = "delete-comment")
-    public String delete(@ShellOption long id) {
+    public String delete(@ShellOption String id) {
         commentService.deleteById(id);
         return "Deleted comment " + id;
     }
 
     @ShellMethod(value = "Delete comments by book id.", key = "delete-by-bookId")
-    public String deleteByBookId(@ShellOption long bookId) {
+    public String deleteByBookId(@ShellOption String bookId) {
         List<Comment> comments = commentService.deleteByBookId(bookId);
         StringBuilder sb = new StringBuilder();
         sb.append("Deleted comment by bookId: [ ");

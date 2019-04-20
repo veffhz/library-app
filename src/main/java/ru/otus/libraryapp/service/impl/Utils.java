@@ -15,7 +15,7 @@ public class Utils {
     private static final String DATE_FORMAT = "dd-MM-yyyy";
     private static final DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT);
 
-    static Date toDate(String date) {
+    public static Date toDate(String date) {
         try {
             return dateFormat.parse(date);
         } catch (ParseException e) {

@@ -1,34 +1,27 @@
 package ru.otus.libraryapp.domain;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
-import javax.persistence.*;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
+
 import java.util.Date;
 
 @Getter
 @NoArgsConstructor
-@Entity
 @ToString(exclude = "book")
-@Table(name = "comments")
-@NamedEntityGraph(name = "commentGraph", includeAllAttributes = true)
+@Document(collection = "comments")
+@EqualsAndHashCode
 public class Comment {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "book_id")
+    private String id;
     @Setter
+    @DBRef
     private Book book;
-    @Column
     private String author;
-    @Column
     private Date date;
-    @Column
     private String content;
 
     public Comment(String author, Date date, String content) {

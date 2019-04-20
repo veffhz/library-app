@@ -3,6 +3,7 @@ package ru.otus.libraryapp.service.impl;
 import lombok.extern.java.Log;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import ru.otus.libraryapp.dao.BookRepository;
@@ -11,6 +12,7 @@ import ru.otus.libraryapp.domain.Book;
 import ru.otus.libraryapp.domain.Genre;
 import ru.otus.libraryapp.service.AuthorService;
 import ru.otus.libraryapp.service.BookService;
+import ru.otus.libraryapp.service.CommentService;
 import ru.otus.libraryapp.service.GenreService;
 
 import java.util.List;
@@ -27,12 +29,15 @@ public class BookServiceImpl implements BookService {
 
     private final AuthorService authorService;
     private final GenreService genreService;
+    private final CommentService commentService;
 
     @Autowired
-    public BookServiceImpl(BookRepository repository, AuthorService authorService, GenreService genreService) {
+    public BookServiceImpl(BookRepository repository, @Lazy AuthorService authorService,
+                           GenreService genreService, @Lazy CommentService commentService) {
         this.repository = repository;
         this.authorService = authorService;
         this.genreService = genreService;
+        this.commentService = commentService;
     }
 
     @Override
@@ -40,7 +45,7 @@ public class BookServiceImpl implements BookService {
         return repository.count();
     }
 
-    public Optional<Book> getById(long id) {
+    public Optional<Book> getById(String id) {
         return repository.findById(id);
     }
 
@@ -60,18 +65,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public List<Book> deleteByAuthorId(String authorId) {
+        return repository.deleteByAuthorId(authorId);
+    }
+
+    @Override
+    public void deleteById(String id) {
+        commentService.deleteByBookId(id);
         repository.deleteById(id);
     }
 
     @Override
-    public long insert(long authorId, long genreId, String bookName, String publishDate, String language,
+    public String insert(String authorId, String genreId, String bookName, String publishDate, String language,
                       String publishingHouse, String city, String isbn) {
         Optional<Author> author = authorService.getById(authorId);
         Optional<Genre> genre = genreService.getById(genreId);
         Book book = new Book(author.orElse(new Author()), genre.orElse(new Genre()), bookName, toDate(publishDate), language, publishingHouse, city, isbn);
         Book bookDb = repository.save(book);
-        return Objects.nonNull(bookDb) ? bookDb.getId() : 0L;
+        return Objects.nonNull(bookDb) ? bookDb.getId() : null;
     }
 
 }

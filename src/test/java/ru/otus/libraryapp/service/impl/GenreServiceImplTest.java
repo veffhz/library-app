@@ -3,13 +3,14 @@ package ru.otus.libraryapp.service.impl;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import ru.otus.libraryapp.dao.GenreRepository;
 import ru.otus.libraryapp.domain.Genre;
-import ru.otus.libraryapp.service.GenreService;
 
 import java.util.Optional;
 
@@ -20,11 +21,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("Test for Genre Service")
-@SpringBootTest
+@ExtendWith(SpringExtension.class)
 class GenreServiceImplTest {
 
-    @Autowired
-    private GenreService genreService;
+    @SpyBean
+    private GenreServiceImpl genreService;
 
     @MockBean
     private GenreRepository genreRepository;
@@ -33,11 +34,11 @@ class GenreServiceImplTest {
     @DisplayName("Test invoke get genre by id")
     void shouldGetGenreById() {
         Genre genreMock = new Genre("test");
-        when(genreRepository.findById(any(Long.class))).thenReturn(Optional.of(genreMock));
+        when(genreRepository.findById(any(String.class))).thenReturn(Optional.of(genreMock));
 
-        Genre genre = genreService.getById(1L).get();
+        Genre genre = genreService.getById("000").get();
 
-        verify(genreRepository, times(1)).findById(1L);
+        verify(genreRepository, times(1)).findById("000");
         assertEquals(genreMock, genre);
     }
 
@@ -51,8 +52,8 @@ class GenreServiceImplTest {
     @Test
     @DisplayName("Test invoke delete genre by id")
     void shouldDeleteGenreById() {
-        genreService.deleteById(1);
-        verify(genreRepository, times(1)).deleteById(1L);
+        genreService.deleteById("000");
+        verify(genreRepository, times(1)).deleteById("000");
     }
 
     @Test

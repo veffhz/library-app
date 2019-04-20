@@ -7,9 +7,9 @@ import java.util.Optional;
 
 public interface AuthorService {
     long count();
-    Optional<Author> getById(long id);
+    Optional<Author> getById(String id);
     List<Author> getByLastName(String name);
     List<Author> getAll();
-    void deleteById(long id);
-    long insert(String firstName, String middleName, String lastName);
+    void deleteById(String id);
+    String insert(String firstName, String middleName, String lastName);
 }

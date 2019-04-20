@@ -4,24 +4,26 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-@DataJpaTest
+@DataMongoTest
 class GenreTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    private MongoTemplate mongoTemplate;
 
     @Test
     public void saveAndGet() {
         Genre genre = new Genre("Genre");
-        Long id = entityManager.persistAndGetId(genre, Long.class);
-        Genre genreFromDb = entityManager.find(Genre.class, id);
+        mongoTemplate.insert(genre, "genres");
+
+        Genre genreFromDb = mongoTemplate.findById(genre.getId(), Genre.class,"genres");
+
         assertEquals(genre, genreFromDb);
     }
 }

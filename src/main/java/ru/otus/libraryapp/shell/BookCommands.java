@@ -27,7 +27,7 @@ public class BookCommands {
     }
 
     @ShellMethod("Show book by id.")
-    public String book(@ShellOption long id) {
+    public String book(@ShellOption String id) {
         Optional<Book> book = bookService.getById(id);
         return book.isPresent() ? book.get().toString() : "book not found.";
     }
@@ -47,20 +47,20 @@ public class BookCommands {
         return Arrays.toString(bookService.getAll().toArray());
     }
 
-    @ShellMethod(value = "Delete author by id.", key = "delete-book")
-    public String delete(@ShellOption long id) {
+    @ShellMethod(value = "Delete book by id.", key = "delete-book")
+    public String delete(@ShellOption String id) {
         bookService.deleteById(id);
-        return String.format("Deleted book {%d}", id);
+        return String.format("Deleted book {%s}", id);
     }
 
     @ShellMethod(value = "Add book \"authorId\", \"genreId\", \"bookName\", \"publishDate\", " +
             "\"language\", \"publishingHouse\", \"city\", \"isbn\".", key = "add-book")
-    public String add(@ShellOption long authorId, @ShellOption long genreId,
+    public String add(@ShellOption String authorId, @ShellOption String genreId,
                     @ShellOption String bookName, @ShellOption String publishDate,
                     @ShellOption String language, @ShellOption String publishingHouse,
                     @ShellOption String city, @ShellOption String isbn) {
-        long id = bookService.insert(authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
-        return String.format("Book {%d} created", id);
+        String id = bookService.insert(authorId, genreId, bookName, publishDate, language, publishingHouse, city, isbn);
+        return String.format("Book {%s} created", id);
     }
 
 }

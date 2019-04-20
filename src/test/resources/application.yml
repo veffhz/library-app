@@ -1,9 +1,8 @@
 spring:
-  jpa:
-    hibernate:
-      ddl-auto: none
-  datasource:
-    data: testdata.sql
+  data:
+    mongodb:
+      port: 0
+      database: test
   shell:
     interactive:
       enabled: false

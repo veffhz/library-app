@@ -27,7 +27,7 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public Optional<Genre> getById(long id) {
+    public Optional<Genre> getById(String id) {
         return repository.findById(id);
     }
 
@@ -42,15 +42,15 @@ public class GenreServiceImpl implements GenreService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
     @Override
-    public long insert(String genreName) {
+    public String insert(String genreName) {
         Genre genre = new Genre(genreName);
         Genre genreDb = repository.save(genre);
-        return Objects.nonNull(genreDb) ? genreDb.getId() : 0L;
+        return Objects.nonNull(genreDb) ? genreDb.getId() : null;
     }
 
 }

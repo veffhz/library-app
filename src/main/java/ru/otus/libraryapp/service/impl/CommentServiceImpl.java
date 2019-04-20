@@ -30,22 +30,22 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Optional<Comment> getById(long id) {
+    public Optional<Comment> getById(String id) {
         return repository.findById(id);
     }
 
     @Override
-    public List<Comment> getByBookId(long bookId) {
+    public List<Comment> getByBookId(String bookId) {
         return repository.findByBookId(bookId);
     }
 
     @Override
-    public long insert(String author, String date, String content, long bookId) {
+    public String insert(String author, String date, String content, String bookId) {
         Comment comment = new Comment(author, toDate(date), content);
         Book book = bookService.getById(bookId).get(); // TODO get
         comment.setBook(book);
         Comment commentDb = repository.save(comment);
-        return Objects.nonNull(commentDb) ? commentDb.getId() : 0L;
+        return Objects.nonNull(commentDb) ? commentDb.getId() : null;
     }
 
     @Override
@@ -54,13 +54,13 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void deleteById(long id) {
+    public void deleteById(String id) {
         repository.deleteById(id);
     }
 
     @Override
     @Transactional
-    public List<Comment> deleteByBookId(long bookId) {
+    public List<Comment> deleteByBookId(String bookId) {
         return repository.deleteByBookId(bookId);
     }
 }
