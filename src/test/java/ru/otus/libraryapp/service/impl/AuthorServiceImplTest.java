@@ -28,6 +28,9 @@ class AuthorServiceImplTest {
     @MockBean
     private AuthorRepository authorRepository;
 
+    @MockBean
+    private BookServiceImpl bookService;
+
     @Test
     @DisplayName("Test invoke get author by id")
     void shouldGetAuthorById() {

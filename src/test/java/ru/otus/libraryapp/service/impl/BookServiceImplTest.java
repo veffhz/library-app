@@ -38,6 +38,9 @@ class BookServiceImplTest {
     private GenreServiceImpl genreService;
 
     @MockBean
+    private CommentServiceImpl commentService;
+
+    @MockBean
     private BookRepository bookRepository;
 
     @Test
