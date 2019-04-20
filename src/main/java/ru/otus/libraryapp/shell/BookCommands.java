@@ -47,7 +47,7 @@ public class BookCommands {
         return Arrays.toString(bookService.getAll().toArray());
     }
 
-    @ShellMethod(value = "Delete author by id.", key = "delete-book")
+    @ShellMethod(value = "Delete book by id.", key = "delete-book")
     public String delete(@ShellOption String id) {
         bookService.deleteById(id);
         return String.format("Deleted book {%s}", id);

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.otus.libraryapp.dao.AuthorRepository;
 import ru.otus.libraryapp.domain.Author;
 import ru.otus.libraryapp.service.AuthorService;
+import ru.otus.libraryapp.service.BookService;
 
 import java.util.List;
 import java.util.Objects;
@@ -17,10 +18,12 @@ import java.util.Optional;
 public class AuthorServiceImpl implements AuthorService {
 
     private final AuthorRepository repository;
+    private final BookService bookService;
 
     @Autowired
-    public AuthorServiceImpl(AuthorRepository repository) {
+    public AuthorServiceImpl(AuthorRepository repository, BookService bookService) {
         this.repository = repository;
+        this.bookService = bookService;
     }
 
     @Override
@@ -45,6 +48,7 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteById(String id) {
+        bookService.deleteByAuthorId(id);
         repository.deleteById(id);
     }
 

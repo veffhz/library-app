@@ -9,4 +9,5 @@ import java.util.List;
 public interface BookRepository extends MongoRepository<Book, String> {
     List<Book> findByBookName(String bookName);
     List<Book> findByBookNameContaining(String bookName);
+    List<Book> deleteByAuthorId(String authorId);
 }
