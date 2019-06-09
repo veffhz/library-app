@@ -1,6 +1,6 @@
 # library-app
 
-Simple console application on Spring Boot, Spring Shell and MongoDB. Usage:
+Simple console application with Spring Boot, Spring Shell and MongoDB. Usage:
 
 #### Author commands
         add-author: Add author "firstName", "middleName", "lastName".
